@@ -10,6 +10,7 @@ import {
   rem,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import Link from "next/link";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -74,7 +75,7 @@ export function HeaderSimple({ links }: HeaderSimpleProps) {
   const { classes, cx } = useStyles();
 
   const items = links.map((link) => (
-    <a
+    <Link
       key={link.label}
       href={link.link}
       className={cx(classes.link, {
@@ -86,7 +87,7 @@ export function HeaderSimple({ links }: HeaderSimpleProps) {
       }}
     >
       {link.label}
-    </a>
+    </Link>
   ));
 
   return (
