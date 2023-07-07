@@ -1,6 +1,6 @@
 import "./globals.css";
 import RootStyleRegistry from "@/app/emotion";
-import { HeaderSimple } from "@/app/headerSimple";
+import { HeaderSimple } from "@/app/HeaderSimple";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
