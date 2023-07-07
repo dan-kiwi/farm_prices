@@ -3,7 +3,6 @@
 import {
   Button,
   Card,
-  Paper,
   SegmentedControl,
   Select,
   TextInput,
@@ -19,7 +18,7 @@ export default function SubmitForm() {
       </Card.Section>
       <Card.Section>
         <TextInput label="Sale Price" type="number" required />
-        <SegmentedControl data={["Farm to Farm", "Farm to Non Farm"]} />
+        <SegmentedControl data={["Farm to Farm", "Farm to AgriBusiness"]} />
         <Select
           label="Business Name"
           placeholder="What business did you sell to?"

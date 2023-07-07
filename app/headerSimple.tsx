@@ -2,15 +2,16 @@
 
 import { useState } from "react";
 import {
-  createStyles,
-  Header,
-  Container,
-  Group,
   Burger,
+  Container,
+  createStyles,
+  Group,
+  Header,
   rem,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -70,8 +71,11 @@ interface HeaderSimpleProps {
 }
 
 export function HeaderSimple({ links }: HeaderSimpleProps) {
+  const pathname = usePathname();
   const [opened, { toggle }] = useDisclosure(false);
-  const [active, setActive] = useState(links[0].link);
+  const [active, setActive] = useState(
+    (links.find((link) => link.link === pathname) ?? links[0]).link
+  );
   const { classes, cx } = useStyles();
 
   const items = links.map((link) => (
@@ -81,8 +85,7 @@ export function HeaderSimple({ links }: HeaderSimpleProps) {
       className={cx(classes.link, {
         [classes.linkActive]: active === link.link,
       })}
-      onClick={(event) => {
-        event.preventDefault();
+      onClick={() => {
         setActive(link.link);
       }}
     >
@@ -91,7 +94,7 @@ export function HeaderSimple({ links }: HeaderSimpleProps) {
   ));
 
   return (
-    <Header height={60} mb={120}>
+    <Header height={60}>
       <Container className={classes.header}>
         <Group spacing={5} className={classes.links}>
           {items}

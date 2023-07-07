@@ -1,18 +1,6 @@
-create table if not exists todos (
-  id uuid default gen_random_uuid() primary key,
-  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
-  title text,
-  is_complete boolean default false,
-  user_id uuid references auth.users default auth.uid()
+create table if not exists user_profiles (
+  user_id uuid primary key references auth.users (id) not null,
+  username text unique not null
+  CONSTRAINT proper_username CHECK (username ~* '^[a-zA-Z0-9_]+$')
+  CONSTRAINT username_length CHECK (char_length(username) > 3 and char_length(username) < 15)
 );
-
--- Set up Row Level Security (RLS)
--- See https://supabase.com/docs/guides/auth/row-level-security for more details.
-alter table todos
-  enable row level security;
-
-create policy "Authenticated users can select todos" on todos
-  for select to authenticated using (true);
-
-create policy "Authenticated users can insert their own todos" on todos
-  for insert to authenticated with check (auth.uid() = user_id);
