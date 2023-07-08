@@ -3,6 +3,7 @@ import RootStyleRegistry from "@/app/emotion";
 import { HeaderSimple } from "@/app/HeaderSimple";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
+import Footer from "@/app/Footer";
 
 export const metadata = {
   title: "Farm Prices NZ",
@@ -39,6 +40,7 @@ export default async function RootLayout({
           <main className="min-h-screen bg-background flex flex-col items-center pt-8">
             {children}
           </main>
+          <Footer />
         </RootStyleRegistry>
       </body>
     </html>
