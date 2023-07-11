@@ -5,12 +5,17 @@ import {
   createStyles,
   Group,
   rem,
+  SegmentedControl,
+  Select,
   SimpleGrid,
   Text,
   Textarea,
   TextInput,
   Title,
 } from "@mantine/core";
+import { ItemLocationContext } from "@/context/itemLocation";
+import { useContext, useEffect, useState } from "react";
+import { Item, itemsMaster, Region, regionsMaster } from "@/types/regionItem";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -78,6 +83,21 @@ const useStyles = createStyles((theme) => ({
 
 export default function SubmitForm() {
   const { classes } = useStyles();
+  const { itemLocationContext, updateItemLocationContext } =
+    useContext(ItemLocationContext);
+
+  const [regionLocal, setRegionLocal] = useState<Region>(
+    itemLocationContext.region
+  );
+  const [itemLocal, setItemLocal] = useState<Item>(itemLocationContext.item);
+  const [varietyLocal, setVarietyLocal] = useState<string | null>(
+    itemLocationContext.variety
+  );
+  const [price, setPrice] = useState<number | undefined>();
+  const [businessName, setBusinessName] = useState<string | null>(null);
+  const [saleDate, setSaleDate] = useState<string | null>(null);
+  const [postCode, setPostCode] = useState<number | null>(null);
+  const [farmToFarm, setFarmToFarm] = useState<boolean>(true);
 
   return (
     <div className={classes.wrapper}>
@@ -99,11 +119,34 @@ export default function SubmitForm() {
           </Text>
         </div>
         <div className={classes.form}>
+          <Select
+            label="Region"
+            data={Object.keys(regionsMaster)}
+            value={regionLocal}
+            onChange={(value) => setRegionLocal(value as Region)}
+          />
+          <Select
+            label="Item"
+            data={Object.keys(itemsMaster)}
+            value={itemLocal}
+            onChange={(value) => setItemLocal(value as Item)}
+          />
+          <Select
+            data={itemsMaster[itemLocal]}
+            label="Variety"
+            value={varietyLocal}
+            onChange={setVarietyLocal}
+          />
           <TextInput
             label="Sale Price"
             type="number"
             required
+            onChange={(event) => setPrice(Number(event.target.value))}
             classNames={{ input: classes.input, label: classes.inputLabel }}
+          />
+          <SegmentedControl
+            data={["Farm to Farm", "Farm to AgriBusiness"]}
+            onChange={(value) => setFarmToFarm(value === "Farm to Farm")}
           />
           <TextInput
             label="Name"

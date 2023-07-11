@@ -1,31 +1,51 @@
 "use client";
 
+import React, { useState } from "react";
 import { createContext } from "react";
-import { ItemGroup, Region } from "@/types/regionItem";
+import { Item, Region } from "@/types/regionItem";
 
-type StateType = {
+type ItemLocation = {
   region: Region;
   district: string | null;
-  itemGroup: ItemGroup;
-  item: string | null;
+  item: Item;
+  variety: string | null;
 };
 
-const initalState: StateType = {
+const initialItemLocation: ItemLocation = {
   region: "Canterbury",
   district: null,
-  itemGroup: "Cereals",
-  item: "Milling Wheat",
+  item: "Cereals",
+  variety: "Milling Wheat",
 };
 
-export const ItemLocationContext = createContext<StateType>(initalState);
+type ItemLocationContextType = {
+  itemLocationContext: ItemLocation;
+  updateItemLocationContext: (updatedState: ItemLocation) => void;
+};
+
+export const ItemLocationContext = createContext<ItemLocationContextType>({
+  itemLocationContext: initialItemLocation,
+  updateItemLocationContext: () => {},
+});
 
 export default function ItemLocationProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [state, setState] = useState<ItemLocation>(initialItemLocation);
+
+  const updateContext = (updatedState: ItemLocation) => {
+    setState(updatedState);
+  };
+
   return (
-    <ItemLocationContext.Provider value={initalState}>
+    <ItemLocationContext.Provider
+      value={{
+        itemLocationContext: state,
+        updateItemLocationContext: updateContext,
+      }}
+    >
       {children}
     </ItemLocationContext.Provider>
   );

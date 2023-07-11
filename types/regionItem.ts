@@ -28,4 +28,4 @@ export const itemsMaster = {
   Cereals: ["Feed Wheat", "Biscuit Wheat", "Milling Wheat", "Barley"],
 };
 
-export type ItemGroup = keyof typeof itemsMaster;
+export type Item = keyof typeof itemsMaster;
