@@ -16,6 +16,7 @@ import {
 import { ItemLocationContext } from "@/context/itemLocation";
 import { useContext, useEffect, useState } from "react";
 import { Item, itemsMaster, Region, regionsMaster } from "@/types/regionItem";
+import { DatePickerInput, DateValue } from "@mantine/dates";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -83,8 +84,7 @@ const useStyles = createStyles((theme) => ({
 
 export default function SubmitForm() {
   const { classes } = useStyles();
-  const { itemLocationContext, updateItemLocationContext } =
-    useContext(ItemLocationContext);
+  const { itemLocationContext } = useContext(ItemLocationContext);
 
   const [regionLocal, setRegionLocal] = useState<Region>(
     itemLocationContext.region
@@ -95,9 +95,28 @@ export default function SubmitForm() {
   );
   const [price, setPrice] = useState<number | undefined>();
   const [businessName, setBusinessName] = useState<string | null>(null);
-  const [saleDate, setSaleDate] = useState<string | null>(null);
+  const [otherBusinessName, setOtherBusinessName] = useState<string | null>(
+    null
+  );
+  const [saleDate, setSaleDate] = useState<DateValue>(null);
   const [postCode, setPostCode] = useState<number | null>(null);
   const [farmToFarm, setFarmToFarm] = useState<boolean>(true);
+
+  const agribusinessMaster = [
+    "PGG Wrightsons",
+    "Farmlands",
+    "RuralCo",
+    "Champion Milling",
+    "Midland Seeds",
+    "Other",
+  ];
+
+  useEffect(() => {
+    if (farmToFarm) {
+      setBusinessName(null);
+      setOtherBusinessName(null);
+    }
+  }, [farmToFarm]);
 
   return (
     <div className={classes.wrapper}>
@@ -140,13 +159,41 @@ export default function SubmitForm() {
           <TextInput
             label="Sale Price"
             type="number"
-            required
             onChange={(event) => setPrice(Number(event.target.value))}
+            classNames={{ input: classes.input, label: classes.inputLabel }}
+          />
+          <DatePickerInput
+            label="Sale Date"
+            placeholder="Select date"
+            onChange={(value) => setSaleDate(value)}
             classNames={{ input: classes.input, label: classes.inputLabel }}
           />
           <SegmentedControl
             data={["Farm to Farm", "Farm to AgriBusiness"]}
             onChange={(value) => setFarmToFarm(value === "Farm to Farm")}
+          />
+          {!farmToFarm && (
+            <Select
+              label="Business Name"
+              data={agribusinessMaster}
+              // value={businessName}
+              onChange={(value) => setBusinessName(value as string)}
+            />
+          )}
+          {!farmToFarm && businessName === "Other" && (
+            <TextInput
+              label="Other Business Name"
+              // placeholder="Business Name"
+              mt="md"
+              classNames={{ input: classes.input, label: classes.inputLabel }}
+            />
+          )}
+          <TextInput
+            label="Your Farm's Postcode"
+            type="number"
+            required
+            onChange={(event) => setPostCode(Number(event.target.value))}
+            classNames={{ input: classes.input, label: classes.inputLabel }}
           />
           <TextInput
             label="Name"
