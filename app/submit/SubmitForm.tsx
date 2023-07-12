@@ -9,7 +9,6 @@ import {
   Select,
   SimpleGrid,
   Text,
-  Textarea,
   TextInput,
   Title,
 } from "@mantine/core";
