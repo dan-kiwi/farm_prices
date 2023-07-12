@@ -102,6 +102,30 @@ export default function SubmitForm() {
   const [postCode, setPostCode] = useState<number | null>(null);
   const [farmToFarm, setFarmToFarm] = useState<boolean>(true);
 
+  const canSubmit =
+    varietyLocal &&
+    price &&
+    saleDate &&
+    postCode &&
+    (farmToFarm ||
+      (businessName === "Other" && otherBusinessName) ||
+      (businessName && businessName !== otherBusinessName));
+
+  const submitForm = () => {
+    return;
+  };
+  const resetForm = () => {
+    setRegionLocal(itemLocationContext.region);
+    setItemLocal(itemLocationContext.item);
+    setVarietyLocal(itemLocationContext.variety);
+    setPrice(undefined);
+    setBusinessName(null);
+    setOtherBusinessName(null);
+    setSaleDate(null);
+    setPostCode(null);
+    setFarmToFarm(true);
+  };
+
   const agribusinessMaster = [
     "PGG Wrightsons",
     "Farmlands",
@@ -195,23 +219,17 @@ export default function SubmitForm() {
             onChange={(event) => setPostCode(Number(event.target.value))}
             classNames={{ input: classes.input, label: classes.inputLabel }}
           />
-          <TextInput
-            label="Name"
-            placeholder="John Doe"
-            mt="md"
-            classNames={{ input: classes.input, label: classes.inputLabel }}
-          />
-          <Textarea
-            required
-            label="Your message"
-            placeholder="I want to order your goods"
-            minRows={4}
-            mt="md"
-            classNames={{ input: classes.input, label: classes.inputLabel }}
-          />
-
           <Group position="right" mt="md">
-            <Button className={classes.control}>Send message</Button>
+            <Button onClick={resetForm} className={classes.control}>
+              Reset
+            </Button>
+            <Button
+              onClick={submitForm}
+              disabled={!canSubmit}
+              className={classes.control}
+            >
+              Submit
+            </Button>
           </Group>
         </div>
       </SimpleGrid>
