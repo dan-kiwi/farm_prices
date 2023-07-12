@@ -16,6 +16,8 @@ import { ItemLocationContext } from "@/context/itemLocation";
 import { useContext, useEffect, useState } from "react";
 import { Item, itemsMaster, Region, regionsMaster } from "@/types/regionItem";
 import { DatePickerInput, DateValue } from "@mantine/dates";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Database } from "@/types/supabase";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -83,8 +85,10 @@ const useStyles = createStyles((theme) => ({
 
 export default function SubmitForm() {
   const { classes } = useStyles();
+  const supabase = createClientComponentClient<Database>();
   const { itemLocationContext } = useContext(ItemLocationContext);
 
+  const [loading, setLoading] = useState<"editing" | "sending" | "confirmed">();
   const [regionLocal, setRegionLocal] = useState<Region>(
     itemLocationContext.region
   );
