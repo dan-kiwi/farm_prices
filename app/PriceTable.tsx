@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createStyles, Table, ScrollArea, rem } from "@mantine/core";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Database } from "@/types/supabase";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -37,7 +39,12 @@ interface TableScrollAreaProps {
 export default function PriceTable({ data }: TableScrollAreaProps) {
   const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
+  const supabase = createClientComponentClient<Database>();
 
+  const rows2 = supabase.from("prices_canterbury").headers;
+  const data2 = supabase.from("prices_canterbury").select();
+
+  // const tableHeader = rows2
   const rows = data.map((row) => (
     <tr key={row.name}>
       <td>{row.name}</td>
