@@ -27,47 +27,54 @@ export interface Database {
         }
         Relationships: []
       }
-      prices_canterbury: {
+      prices_cereal: {
         Row: {
           business_name: string | null
-          created_at: string
+          created_at: string | null
           farm_to_farm: boolean
           id: number
-          item: string
-          item_group: string
-          post_code: number
+          post_code: number | null
           price: number
+          region: number
           sale_date: string
           user_id: string | null
+          variety: string
           verified: boolean
         }
         Insert: {
           business_name?: string | null
-          created_at?: string
+          created_at?: string | null
           farm_to_farm: boolean
           id?: number
-          item: string
-          item_group: string
-          post_code: number
+          post_code?: number | null
           price: number
+          region: number
           sale_date: string
           user_id?: string | null
+          variety: string
           verified?: boolean
         }
         Update: {
           business_name?: string | null
-          created_at?: string
+          created_at?: string | null
           farm_to_farm?: boolean
           id?: number
-          item?: string
-          item_group?: string
-          post_code?: number
+          post_code?: number | null
           price?: number
+          region?: number
           sale_date?: string
           user_id?: string | null
+          variety?: string
           verified?: boolean
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "prices_cereal_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       prices_unapproved: {
         Row: {
@@ -113,6 +120,40 @@ export interface Database {
           verified?: boolean
         }
         Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          full_name: string | null
+          id: string
+          updated_at: string | null
+          username: string | null
+          website: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          full_name?: string | null
+          id: string
+          updated_at?: string | null
+          username?: string | null
+          website?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string | null
+          username?: string | null
+          website?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
     }
     Views: {
