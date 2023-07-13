@@ -88,7 +88,9 @@ export default function SubmitForm() {
   const supabase = createClientComponentClient<Database>();
   const { itemLocationContext } = useContext(ItemLocationContext);
 
-  const [loading, setLoading] = useState<"editing" | "sending" | "confirmed">();
+  const [loading, setLoading] = useState<
+    "editing" | "sending" | "confirmed" | "error"
+  >();
   const [regionLocal, setRegionLocal] = useState<Region>(
     itemLocationContext.region
   );
@@ -104,6 +106,7 @@ export default function SubmitForm() {
   const [saleDate, setSaleDate] = useState<DateValue>(null);
   const [postCode, setPostCode] = useState<number | null>(null);
   const [farmToFarm, setFarmToFarm] = useState<boolean>(true);
+  const [verified, setVerified] = useState<boolean>(false);
 
   const canSubmit =
     varietyLocal &&
@@ -114,7 +117,30 @@ export default function SubmitForm() {
       (businessName === "Other" && otherBusinessName) ||
       (businessName && businessName !== otherBusinessName));
 
-  const submitForm = () => {
+  const submitForm = async () => {
+    setLoading("sending");
+    if (!price || !postCode || !saleDate) return;
+    try {
+      await supabase.from("prices_unapproved").insert({
+        region: regionLocal,
+        item: itemLocal,
+        price,
+        variety: varietyLocal ?? "",
+        post_code: postCode,
+        farm_to_farm: farmToFarm,
+        sale_date: saleDate.toISOString().slice(0, 10),
+        verified,
+        business_name: farmToFarm
+          ? null
+          : businessName === "Other"
+          ? otherBusinessName
+          : businessName,
+      });
+    } catch (e) {
+      setLoading("error");
+    } finally {
+      setLoading("confirmed");
+    }
     return;
   };
   const resetForm = () => {

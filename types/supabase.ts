@@ -83,12 +83,12 @@ export interface Database {
           farm_to_farm: boolean
           id: number
           item: string
-          item_group: string
           post_code: number
           price: number
           region: string
           sale_date: string
           user_id: string | null
+          variety: string
           verified: boolean
         }
         Insert: {
@@ -97,12 +97,12 @@ export interface Database {
           farm_to_farm: boolean
           id?: number
           item: string
-          item_group: string
           post_code: number
           price: number
           region: string
           sale_date: string
           user_id?: string | null
+          variety: string
           verified?: boolean
         }
         Update: {
@@ -111,12 +111,12 @@ export interface Database {
           farm_to_farm?: boolean
           id?: number
           item?: string
-          item_group?: string
           post_code?: number
           price?: number
           region?: string
           sale_date?: string
           user_id?: string | null
+          variety?: string
           verified?: boolean
         }
         Relationships: []
