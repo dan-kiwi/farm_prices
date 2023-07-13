@@ -1,8 +1,8 @@
 "use client";
 
-import PriceInfo from "@/app/PriceInfo";
-import PriceGraph from "@/app/PriceGraph";
-import PriceTable from "@/app/PriceTable";
+import PriceInfo from "@/app/(prices)/PriceInfo";
+import PriceGraph from "@/app/(prices)/PriceGraph";
+import PriceTable from "@/app/(prices)/PriceTable";
 
 export default function Prices() {
   return (
@@ -12,7 +12,7 @@ export default function Prices() {
       </div>
       <div className="p-8">
         <PriceGraph />
-        <PriceTable data={[]} />
+        <PriceTable />
       </div>
     </div>
   );

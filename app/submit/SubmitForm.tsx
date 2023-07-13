@@ -4,6 +4,7 @@ import {
   Button,
   createStyles,
   Group,
+  Loader,
   rem,
   SegmentedControl,
   Select,
@@ -18,6 +19,7 @@ import { Item, itemsMaster, Region, regionsMaster } from "@/types/regionItem";
 import { DatePickerInput, DateValue } from "@mantine/dates";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/types/supabase";
+import { capitalise } from "@/utils/regex";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -90,7 +92,7 @@ export default function SubmitForm() {
 
   const [loading, setLoading] = useState<
     "editing" | "sending" | "confirmed" | "error"
-  >();
+  >("editing");
   const [regionLocal, setRegionLocal] = useState<Region>(
     itemLocationContext.region
   );
@@ -153,6 +155,8 @@ export default function SubmitForm() {
     setSaleDate(null);
     setPostCode(null);
     setFarmToFarm(true);
+    setLoading("editing");
+    setVerified(false);
   };
 
   const agribusinessMaster = [
@@ -179,7 +183,7 @@ export default function SubmitForm() {
         breakpoints={[{ maxWidth: "sm", cols: 1 }]}
       >
         <div>
-          <Title className={classes.title}>Submit A Pirce</Title>
+          <Title className={classes.title}>Submit A Price</Title>
           <Text className={classes.description} mt="sm" mb={30}>
             Give back to this website, show your support by submitting your
             sales.
@@ -190,112 +194,123 @@ export default function SubmitForm() {
             most up to date pricing information.
           </Text>
         </div>
-        <div className={classes.form}>
-          <Select
-            label="Region"
-            data={Object.keys(regionsMaster)}
-            value={regionLocal}
-            onChange={(value) => setRegionLocal(value as Region)}
-          />
-          <Select
-            label="Item"
-            data={Object.keys(itemsMaster)}
-            value={itemLocal}
-            onChange={(value) => setItemLocal(value as Item)}
-          />
-          <Select
-            data={itemsMaster[itemLocal]}
-            label="Variety"
-            value={varietyLocal}
-            onChange={setVarietyLocal}
-          />
-          <TextInput
-            label="Sale Price"
-            type="number"
-            onChange={(event) => setPrice(Number(event.target.value))}
-            classNames={{ input: classes.input, label: classes.inputLabel }}
-          />
-          <DatePickerInput
-            label="Sale Date"
-            placeholder="Select date"
-            onChange={(value) => setSaleDate(value)}
-            classNames={{ input: classes.input, label: classes.inputLabel }}
-          />
-          <SegmentedControl
-            data={["Farm to Farm", "Farm to AgriBusiness"]}
-            onChange={(value) => setFarmToFarm(value === "Farm to Farm")}
-          />
-          {!farmToFarm && (
+        {loading === "editing" && (
+          <div className={classes.form}>
             <Select
-              label="Business Name"
-              data={agribusinessMaster}
-              // value={businessName}
-              onChange={(value) => setBusinessName(value as string)}
+              label="Region"
+              data={Object.keys(regionsMaster).map((region) => {
+                return {
+                  value: region,
+                  label: capitalise(region),
+                };
+              })}
+              value={regionLocal}
+              onChange={(value) => setRegionLocal(value as Region)}
             />
-          )}
-          {!farmToFarm && businessName === "Other" && (
+            <Select
+              label="Item"
+              data={Object.keys(itemsMaster).map((item) => {
+                return {
+                  value: item,
+                  label: capitalise(item),
+                };
+              })}
+              value={itemLocal}
+              onChange={(value) => setItemLocal(value as Item)}
+            />
+            <Select
+              data={itemsMaster[itemLocal].map((variety) => {
+                return {
+                  value: variety,
+                  label: capitalise(variety),
+                };
+              })}
+              label="Variety"
+              value={varietyLocal}
+              onChange={setVarietyLocal}
+            />
             <TextInput
-              label="Other Business Name"
-              // placeholder="Business Name"
-              mt="md"
+              label="Sale Price"
+              type="number"
+              onChange={(event) => setPrice(Number(event.target.value))}
               classNames={{ input: classes.input, label: classes.inputLabel }}
             />
-          )}
-          <TextInput
-            label="Your Farm's Postcode"
-            type="number"
-            required
-            onChange={(event) => setPostCode(Number(event.target.value))}
-            classNames={{ input: classes.input, label: classes.inputLabel }}
-          />
-          <Group position="right" mt="md">
+            <DatePickerInput
+              label="Sale Date"
+              placeholder="Select date"
+              onChange={(value) => setSaleDate(value)}
+              classNames={{ input: classes.input, label: classes.inputLabel }}
+            />
+            <SegmentedControl
+              data={["Farm to Farm", "Farm to AgriBusiness"]}
+              onChange={(value) => setFarmToFarm(value === "Farm to Farm")}
+            />
+            {!farmToFarm && (
+              <Select
+                label="Business Name"
+                data={agribusinessMaster}
+                // value={businessName}
+                onChange={(value) => setBusinessName(value as string)}
+              />
+            )}
+            {!farmToFarm && businessName === "Other" && (
+              <TextInput
+                label="Other Business Name"
+                // placeholder="Business Name"
+                mt="md"
+                classNames={{ input: classes.input, label: classes.inputLabel }}
+              />
+            )}
+            <TextInput
+              label="Your Farm's Postcode"
+              type="number"
+              required
+              onChange={(event) => setPostCode(Number(event.target.value))}
+              classNames={{ input: classes.input, label: classes.inputLabel }}
+            />
+            <Group position="right" mt="md">
+              <Button onClick={resetForm} className={classes.control}>
+                Reset
+              </Button>
+              <Button
+                onClick={submitForm}
+                disabled={!canSubmit}
+                className={classes.control}
+              >
+                Submit
+              </Button>
+            </Group>
+          </div>
+        )}
+        {loading === "sending" && (
+          <div className={classes.form}>
+            <Title className={classes.title}>Submitting...</Title>
+            <Loader size="xl" />
+          </div>
+        )}
+        {loading === "confirmed" && (
+          <div className={classes.form}>
+            <Title className={classes.title}>Submitted</Title>
+            <Text className={classes.description} mt="sm" mb={30}>
+              Thank you for your submission!
+            </Text>
             <Button onClick={resetForm} className={classes.control}>
-              Reset
+              Submit Another
             </Button>
-            <Button
-              onClick={submitForm}
-              disabled={!canSubmit}
-              className={classes.control}
-            >
-              Submit
+          </div>
+        )}
+        {loading === "error" && (
+          <div className={classes.form}>
+            <Title className={classes.title}>Error</Title>
+            <Text className={classes.description} mt="sm" mb={30}>
+              Sorry, there was an error submitting your price.
+            </Text>
+            <Button onClick={resetForm} className={classes.control}>
+              Try Again
             </Button>
-          </Group>
-        </div>
+          </div>
+        )}
       </SimpleGrid>
     </div>
   );
 }
-
-// export default function SubmitForm() {
-//   return (
-//     <Card withBorder>
-//       <Card.Section>
-//         <Title order={1}>Submit a Sale</Title>
-//       </Card.Section>
-//       <Card.Section>
-//         <TextInput label="Sale Price" type="number" required />
-//         <SegmentedControl data={["Farm to Farm", "Farm to AgriBusiness"]} />
-//         <Select
-//           label="Business Name"
-//           placeholder="What business did you sell to?"
-//           data={["PGG Wrightsons", "Midlands Seeds", "RuralCo", "Other"]}
-//         />
-//         <TextInput label="Other Business Name" />
-//         <TextInput label="Other Farm Postcode" type="number" />
-//         <DatePickerInput
-//           label="Sale Date"
-//           placeholder="When day did the sale occur?"
-//           required
-//         />
-//       </Card.Section>
-//       <Card.Section>
-//         <Button color="red">
-//           <span>Reset</span>
-//         </Button>
-//         <Button color="blue">
-//           <span>Submit</span>
-//         </Button>
-//       </Card.Section>
-//     </Card>
-//   );
-// }

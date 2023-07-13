@@ -38,16 +38,11 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface TableScrollAreaProps {
-  data: { name: string; email: string; company: string }[];
-}
-
-export default function PriceTable({ data }: TableScrollAreaProps) {
+export default function PriceTable() {
   const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
   const [data2, setData2] =
     useState<Database["public"]["Tables"]["prices_cereal"]["Row"][]>();
-  // const [header, setHeader] = useState<string[]>([]);
   const [error, setError] = useState<boolean>();
   const { itemLocationContext } = useContext(ItemLocationContext);
   const supabase = createClientComponentClient<Database>();
@@ -95,13 +90,6 @@ export default function PriceTable({ data }: TableScrollAreaProps) {
       </tr>
     );
   });
-  const rows = data.map((row) => (
-    <tr key={row.name}>
-      <td>{row.name}</td>
-      <td>{row.email}</td>
-      <td>{row.company}</td>
-    </tr>
-  ));
 
   return (
     <ScrollArea
@@ -110,11 +98,6 @@ export default function PriceTable({ data }: TableScrollAreaProps) {
     >
       <Table miw={700}>
         <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
-          {/*<tr>*/}
-          {/*  <th>Name</th>*/}
-          {/*  <th>Email</th>*/}
-          {/*  <th>Company</th>*/}
-          {/*</tr>*/}
           <tr>
             {header.map((col) => {
               return <th key={col.id}>{col.label}</th>;
