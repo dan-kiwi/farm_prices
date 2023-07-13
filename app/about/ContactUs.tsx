@@ -12,6 +12,8 @@ import {
   rem,
 } from "@mantine/core";
 import { useState } from "react";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Database } from "@/types/supabase";
 
 const useStyles = createStyles((theme) => {
   const BREAKPOINT = theme.fn.smallerThan("sm");
@@ -107,8 +109,28 @@ export default function ContactUs() {
   const [email, setEmail] = useState<string>();
   const [subject, setSubject] = useState<string>();
   const [message, setMessage] = useState<string>();
+  const [formState, setformState] = useState<
+    "editing" | "sending" | "confirmed" | "error"
+  >("editing");
+  const supabase = createClientComponentClient<Database>();
   const canSave = name && email && subject && message;
 
+  const handleSubmit = async () => {
+    setformState("sending");
+    try {
+      await supabase.from("feedback").insert({
+        name,
+        email,
+        subject,
+        message,
+      });
+    } catch (e) {
+      setformState("error");
+      console.error(e);
+    } finally {
+      setformState("confirmed");
+    }
+  };
   const resetForm = () => {
     setName("");
     setEmail("");
@@ -119,62 +141,65 @@ export default function ContactUs() {
   return (
     <Paper shadow="md" radius="lg">
       <div className={classes.wrapper}>
-        <form
-          className={classes.form}
-          onSubmit={(event) => event.preventDefault()}
-        >
-          <Text fz="lg" fw={700} className={classes.title}>
-            Get in touch
-          </Text>
+        {formState === "editing" && (
+          <form
+            className={classes.form}
+            onSubmit={(event) => event.preventDefault()}
+          >
+            <Text fz="lg" fw={700} className={classes.title}>
+              Get in touch
+            </Text>
 
-          <div className={classes.fields}>
-            <SimpleGrid cols={2} breakpoints={[{ maxWidth: "sm", cols: 1 }]}>
+            <div className={classes.fields}>
+              <SimpleGrid cols={2} breakpoints={[{ maxWidth: "sm", cols: 1 }]}>
+                <TextInput
+                  label="Your name"
+                  placeholder="Your name"
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                  required
+                />
+                <TextInput
+                  label="Your email"
+                  placeholder="hello@mantine.dev"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  required
+                />
+              </SimpleGrid>
+
               <TextInput
-                label="Your name"
-                placeholder="Your name"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
+                mt="md"
+                label="Subject"
+                placeholder="Subject"
+                value={subject}
+                onChange={(event) => setSubject(event.target.value)}
                 required
               />
-              <TextInput
-                label="Your email"
-                placeholder="hello@mantine.dev"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
+
+              <Textarea
+                mt="md"
+                label="Your message"
+                placeholder="Please include all relevant information"
+                value={message}
+                onChange={(event) => setMessage(event.target.value)}
+                minRows={3}
                 required
               />
-            </SimpleGrid>
 
-            <TextInput
-              mt="md"
-              label="Subject"
-              placeholder="Subject"
-              value={subject}
-              onChange={(event) => setSubject(event.target.value)}
-              required
-            />
-
-            <Textarea
-              mt="md"
-              label="Your message"
-              placeholder="Please include all relevant information"
-              value={message}
-              onChange={(event) => setMessage(event.target.value)}
-              minRows={3}
-              required
-            />
-
-            <Group position="right" mt="md">
-              <Button
-                type="submit"
-                className={classes.control}
-                disabled={!canSave}
-              >
-                Send message
-              </Button>
-            </Group>
-          </div>
-        </form>
+              <Group position="right" mt="md">
+                <Button
+                  type="submit"
+                  className={classes.control}
+                  disabled={!canSave}
+                  onClick={handleSubmit}
+                >
+                  Send message
+                </Button>
+              </Group>
+            </div>
+          </form>
+        )}
       </div>
     </Paper>
   );

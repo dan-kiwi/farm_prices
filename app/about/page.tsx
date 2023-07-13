@@ -3,7 +3,6 @@ import ContactUs from "@/app/about/ContactUs";
 export default function About() {
   return (
     <div className="flex flex-col">
-      <h1 className="mb-4">About us</h1>
       <div className="max-w-3xl gap-2">
         <div className="mantine-Text-root mantine-1d564l0 mb-4">
           Welcome to our farm pricing information website! We are a small

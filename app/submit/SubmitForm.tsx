@@ -90,7 +90,7 @@ export default function SubmitForm() {
   const supabase = createClientComponentClient<Database>();
   const { itemLocationContext } = useContext(ItemLocationContext);
 
-  const [loading, setLoading] = useState<
+  const [formState, setFormState] = useState<
     "editing" | "sending" | "confirmed" | "error"
   >("editing");
   const [regionLocal, setRegionLocal] = useState<Region>(
@@ -120,9 +120,10 @@ export default function SubmitForm() {
       (businessName && businessName !== otherBusinessName));
 
   const submitForm = async () => {
-    setLoading("sending");
+    // setLoading("sending");
     if (!price || !postCode || !saleDate) return;
     try {
+      console.log("submitting");
       await supabase.from("prices_unapproved").insert({
         region: regionLocal,
         item: itemLocal,
@@ -139,9 +140,10 @@ export default function SubmitForm() {
           : businessName,
       });
     } catch (e) {
-      setLoading("error");
+      setFormState("error");
+      console.error(e);
     } finally {
-      setLoading("confirmed");
+      setFormState("confirmed");
     }
     return;
   };
@@ -155,7 +157,7 @@ export default function SubmitForm() {
     setSaleDate(null);
     setPostCode(null);
     setFarmToFarm(true);
-    setLoading("editing");
+    setFormState("editing");
     setVerified(false);
   };
 
@@ -194,8 +196,11 @@ export default function SubmitForm() {
             most up to date pricing information.
           </Text>
         </div>
-        {loading === "editing" && (
-          <div className={classes.form}>
+        {formState === "editing" && (
+          <form
+            className={classes.form}
+            onSubmit={(event) => event.preventDefault()}
+          >
             <Select
               label="Region"
               data={Object.keys(regionsMaster).map((region) => {
@@ -269,9 +274,7 @@ export default function SubmitForm() {
               classNames={{ input: classes.input, label: classes.inputLabel }}
             />
             <Group position="right" mt="md">
-              <Button onClick={resetForm} className={classes.control}>
-                Reset
-              </Button>
+              <Button onClick={resetForm}>Reset</Button>
               <Button
                 onClick={submitForm}
                 disabled={!canSubmit}
@@ -280,15 +283,15 @@ export default function SubmitForm() {
                 Submit
               </Button>
             </Group>
-          </div>
+          </form>
         )}
-        {loading === "sending" && (
+        {formState === "sending" && (
           <div className={classes.form}>
             <Title className={classes.title}>Submitting...</Title>
             <Loader size="xl" />
           </div>
         )}
-        {loading === "confirmed" && (
+        {formState === "confirmed" && (
           <div className={classes.form}>
             <Title className={classes.title}>Submitted</Title>
             <Text className={classes.description} mt="sm" mb={30}>
@@ -299,7 +302,7 @@ export default function SubmitForm() {
             </Button>
           </div>
         )}
-        {loading === "error" && (
+        {formState === "error" && (
           <div className={classes.form}>
             <Title className={classes.title}>Error</Title>
             <Text className={classes.description} mt="sm" mb={30}>
