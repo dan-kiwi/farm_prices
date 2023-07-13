@@ -10,6 +10,8 @@ import {
   SimpleGrid,
   createStyles,
   rem,
+  Title,
+  Loader,
 } from "@mantine/core";
 import { useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -30,6 +32,15 @@ const useStyles = createStyles((theme) => {
           ? theme.colors.dark[8]
           : theme.colors.gray[2]
       }`,
+    },
+
+    description: {
+      color: theme.colors[theme.primaryColor][0],
+      maxWidth: rem(300),
+
+      [theme.fn.smallerThan("sm")]: {
+        maxWidth: "100%",
+      },
     },
 
     form: {
@@ -131,7 +142,8 @@ export default function ContactUs() {
       setformState("confirmed");
     }
   };
-  const resetForm = () => {
+
+  const handleReset = () => {
     setName("");
     setEmail("");
     setSubject("");
@@ -199,6 +211,37 @@ export default function ContactUs() {
               </Group>
             </div>
           </form>
+        )}
+        {formState === "sending" && (
+          <div className={classes.form}>
+            <Title className={classes.title}>Submitting...</Title>
+            <Loader size="xl" />
+          </div>
+        )}
+        {formState === "confirmed" && (
+          <div className={classes.form}>
+            <Title className={classes.title}>Submitted</Title>
+            <Text className={classes.description} mt="sm" mb={30}>
+              Thank you for your feedback! We will get back to you soon.
+            </Text>
+            <Button onClick={handleReset} className={classes.control}>
+              Submit Another
+            </Button>
+          </div>
+        )}
+        {formState === "error" && (
+          <div className={classes.form}>
+            <Title className={classes.title}>Error</Title>
+            <Text className={classes.description} mt="sm" mb={30}>
+              Sorry, there was an error submitting your feedback.
+            </Text>
+            <Button onClick={handleReset} className={classes.control}>
+              Reset
+            </Button>
+            <Button onClick={handleSubmit} className={classes.control}>
+              Try Again
+            </Button>
+          </div>
         )}
       </div>
     </Paper>
