@@ -12,10 +12,10 @@ type ItemLocation = {
 };
 
 const initialItemLocation: ItemLocation = {
-  region: "Canterbury",
+  region: "canterbury",
   district: null,
-  item: "Cereals",
-  variety: "Milling Wheat",
+  item: "cereal",
+  variety: "milling wheat",
 };
 
 type ItemLocationContextType = {

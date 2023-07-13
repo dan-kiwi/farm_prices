@@ -1,3 +1,5 @@
+"use client";
+
 import PriceInfo from "@/app/PriceInfo";
 import PriceGraph from "@/app/PriceGraph";
 import PriceTable from "@/app/PriceTable";

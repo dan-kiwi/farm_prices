@@ -1,31 +1,31 @@
 export const regionsMaster = {
-  Northland: undefined,
-  Auckland: undefined,
-  Waikato: undefined,
-  "Bay of Plenty": undefined,
-  Gisborne: undefined,
-  "Hawkes Bay": undefined,
-  Taranaki: undefined,
-  "Manawatu Wanganui": undefined,
-  Wellington: undefined,
-  Tasman: undefined,
-  Nelson: undefined,
-  Marlborough: undefined,
-  "West Coast": undefined,
-  Canterbury: [
-    "North Canterbury",
-    "Christchurch",
-    "Mid Canterbury",
-    "South Canterbury",
+  northland: undefined,
+  auckland: undefined,
+  waikato: undefined,
+  "bay of plenty": undefined,
+  bisborne: undefined,
+  "hawkes bay": undefined,
+  taranaki: undefined,
+  "manawatu wanganui": undefined,
+  wellington: undefined,
+  tasman: undefined,
+  nelson: undefined,
+  marlborough: undefined,
+  "west coast": undefined,
+  canterbury: [
+    "north canterbury",
+    "christchurch",
+    "mid canterbury",
+    "south canterbury",
   ],
-  Otago: undefined,
-  Southland: undefined,
+  otago: undefined,
+  southland: undefined,
 };
 
 export type Region = keyof typeof regionsMaster;
 
 export const itemsMaster = {
-  Cereals: ["Feed Wheat", "Biscuit Wheat", "Milling Wheat", "Barley"],
+  cereal: ["feed wheat", "biscuit wheat", "milling wheat", "barley"],
 };
 
 export type Item = keyof typeof itemsMaster;

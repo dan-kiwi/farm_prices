@@ -9,7 +9,10 @@ import { Button } from "@mantine/core";
 export default function PriceInfo() {
   const supabase = createClientComponentClient<Database>();
   const { itemLocationContext } = useContext(ItemLocationContext);
-  const price = supabase.from("current_prices").select();
+  const price = supabase
+    .from("current_prices")
+    .select("price")
+    .eq("region", itemLocationContext.region);
 
   return (
     <>
