@@ -9,24 +9,6 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      current_prices: {
-        Row: {
-          price: number | null
-          region: string
-          updated_at: string
-        }
-        Insert: {
-          price?: number | null
-          region: string
-          updated_at?: string
-        }
-        Update: {
-          price?: number | null
-          region?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
       prices_cereal: {
         Row: {
           business_name: string | null
@@ -75,6 +57,24 @@ export interface Database {
             referencedColumns: ["id"]
           }
         ]
+      }
+      prices_current: {
+        Row: {
+          price: number | null
+          region: string
+          updated_at: string
+        }
+        Insert: {
+          price?: number | null
+          region: string
+          updated_at?: string
+        }
+        Update: {
+          price?: number | null
+          region?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       prices_unapproved: {
         Row: {
