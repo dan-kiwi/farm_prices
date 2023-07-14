@@ -1,7 +1,7 @@
 // app/emotion.tsx
 "use client";
 import { CacheProvider } from "@emotion/react";
-import { useEmotionCache, MantineProvider } from "@mantine/core";
+import { createEmotionCache, MantineProvider } from "@mantine/core";
 import { useServerInsertedHTML } from "next/navigation";
 
 export default function RootStyleRegistry({
@@ -9,7 +9,7 @@ export default function RootStyleRegistry({
 }: {
   children: React.ReactNode;
 }) {
-  const cache = useEmotionCache();
+  const cache = createEmotionCache({ key: "mantine", prepend: false });
   cache.compat = true;
 
   useServerInsertedHTML(() => (
