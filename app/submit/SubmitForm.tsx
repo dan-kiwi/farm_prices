@@ -94,16 +94,16 @@ export default function SubmitForm() {
     "editing" | "sending" | "confirmed" | "error"
   >("editing");
   const [regionLocal, setRegionLocal] = useState<Region>(
-    itemLocationContext.region
+    itemLocationContext.region,
   );
   const [itemLocal, setItemLocal] = useState<Item>(itemLocationContext.item);
   const [varietyLocal, setVarietyLocal] = useState<string | null>(
-    itemLocationContext.variety
+    itemLocationContext.variety,
   );
   const [price, setPrice] = useState<number | undefined>();
   const [businessName, setBusinessName] = useState<string | null>(null);
   const [otherBusinessName, setOtherBusinessName] = useState<string | null>(
-    null
+    null,
   );
   const [saleDate, setSaleDate] = useState<DateValue>(null);
   const [postCode, setPostCode] = useState<number | null>(null);
@@ -236,45 +236,49 @@ export default function SubmitForm() {
             />
             <TextInput
               label="Sale Price"
+              placeholder="Price per ton"
               type="number"
               onChange={(event) => setPrice(Number(event.target.value))}
               classNames={{ input: classes.input, label: classes.inputLabel }}
             />
             <DatePickerInput
+              valueFormat="DD/MM/YYYY"
               label="Sale Date"
-              placeholder="Select date"
+              placeholder="Date on which sale was agreed"
               onChange={(value) => setSaleDate(value)}
               classNames={{ input: classes.input, label: classes.inputLabel }}
             />
             <SegmentedControl
               data={["Farm to Farm", "Farm to AgriBusiness"]}
               onChange={(value) => setFarmToFarm(value === "Farm to Farm")}
+              className="mt-3"
             />
             {!farmToFarm && (
               <Select
                 label="Business Name"
                 data={agribusinessMaster}
-                // value={businessName}
                 onChange={(value) => setBusinessName(value as string)}
               />
             )}
             {!farmToFarm && businessName === "Other" && (
               <TextInput
                 label="Other Business Name"
-                // placeholder="Business Name"
-                mt="md"
-                classNames={{ input: classes.input, label: classes.inputLabel }}
+                placeholder="Business Name"
+                // mt="md"
+                // classNames={{ input: classes.input, label: classes.inputLabel }}
               />
             )}
             <TextInput
-              label="Your Farm's Postcode"
+              label="Postcode"
+              placeholder="Your farm's postcode"
               type="number"
-              required
               onChange={(event) => setPostCode(Number(event.target.value))}
               classNames={{ input: classes.input, label: classes.inputLabel }}
             />
             <Group position="right" mt="md">
-              <Button onClick={resetForm}>Reset</Button>
+              <Button color="red" onClick={resetForm}>
+                Reset
+              </Button>
               <Button
                 onClick={submitForm}
                 disabled={!canSubmit}
