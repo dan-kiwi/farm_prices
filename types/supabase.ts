@@ -40,6 +40,7 @@ export interface Database {
         Row: {
           business_name: string | null
           created_at: string | null
+          current: boolean | null
           farm_to_farm: boolean
           id: number
           post_code: number | null
@@ -53,6 +54,7 @@ export interface Database {
         Insert: {
           business_name?: string | null
           created_at?: string | null
+          current?: boolean | null
           farm_to_farm: boolean
           id?: number
           post_code?: number | null
@@ -66,6 +68,7 @@ export interface Database {
         Update: {
           business_name?: string | null
           created_at?: string | null
+          current?: boolean | null
           farm_to_farm?: boolean
           id?: number
           post_code?: number | null
@@ -87,19 +90,19 @@ export interface Database {
       }
       prices_current: {
         Row: {
+          created_at: string | null
           price: number | null
-          region: string
-          updated_at: string
+          region_item_variety: string
         }
         Insert: {
+          created_at?: string | null
           price?: number | null
-          region: string
-          updated_at?: string
+          region_item_variety: string
         }
         Update: {
+          created_at?: string | null
           price?: number | null
-          region?: string
-          updated_at?: string
+          region_item_variety?: string
         }
         Relationships: []
       }
