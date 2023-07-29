@@ -8,7 +8,7 @@
  *   capitalise('javaSCrIPT');          // -> 'JavaSCrIPT'
  *   capitalise('javaSCrIPT', true);    // -> 'Javascript'
  */
-export const capitalise = (str: string, lower = false) =>
+export const capitalise = (str: string, lower = false): string =>
   (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, (match) =>
-    match.toUpperCase()
+    match.toUpperCase(),
   );

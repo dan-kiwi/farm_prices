@@ -4,7 +4,9 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/types/supabase";
 import { useContext } from "react";
 import { ItemLocationContext } from "@/context/itemLocation";
-import { Button } from "@mantine/core";
+import { Button, Group, HoverCard, Text } from "@mantine/core";
+import { capitalise } from "@/utils/regex";
+import { IconInfoCircle } from "@tabler/icons-react";
 
 export default function PriceInfo() {
   const supabase = createClientComponentClient<Database>();
@@ -15,18 +17,29 @@ export default function PriceInfo() {
     .eq("region", itemLocationContext.region);
 
   return (
-    <>
-      <div>
-        <h1>$300</h1>
-        <h1>Our Estimated Price</h1>
+    <div className="flex flex-row justify-between items-center">
+      <div className="flex flex-row gap-2 items-end">
+        <h1>
+          {capitalise(itemLocationContext.variety ?? "")},{" "}
+          {capitalise(itemLocationContext.region ?? "")}: $300
+        </h1>
+        <div className="mb-2.5">
+          <Group>
+            <HoverCard width={250} shadow="md">
+              <HoverCard.Target>
+                <IconInfoCircle size="1rem" />
+              </HoverCard.Target>
+              <HoverCard.Dropdown>
+                <Text size="sm">
+                  This is our estimate price based on our current data. We do
+                  not guarantee the accuracy of this price.
+                </Text>
+              </HoverCard.Dropdown>
+            </HoverCard>
+          </Group>
+        </div>
       </div>
-      <div>
-        <h2>You are currently viewing</h2>
-        <h2>Item: {itemLocationContext.item}</h2>
-        <h2>Variety: {itemLocationContext.variety}</h2>
-        <h2>Region: {itemLocationContext.region}</h2>
-        <Button>Change This</Button>
-      </div>
-    </>
+      <Button>Change This</Button>
+    </div>
   );
 }
