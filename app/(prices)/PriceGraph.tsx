@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, Title, LineChart } from "@tremor/react";
 
 const chartdata = [
