@@ -8,6 +8,7 @@ import {
   Group,
   Header,
   rem,
+  Text,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
@@ -96,6 +97,7 @@ export function HeaderSimple({ links }: HeaderSimpleProps) {
   return (
     <Header height={60}>
       <Container className={classes.header}>
+        <Text size="xl" weight={700}>PastureMarket Logo</Text>
         <Group spacing={5} className={classes.links}>
           {items}
         </Group>
