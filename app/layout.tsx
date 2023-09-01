@@ -31,6 +31,7 @@ export default async function RootLayout({
         { link: "/", label: "Prices" },
         { link: "/submit", label: "Submit" },
         { link: "/about", label: "About" },
+        {link: "/login", label: "Login"},
       ];
 
   return (
