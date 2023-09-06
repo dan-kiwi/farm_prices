@@ -18,9 +18,13 @@ export const regionsMaster = {
 } as const;
 export type RegionIndices = keyof typeof regionsMaster;
 
+// Master of all supported items, can support up to 100 items
+// Highest key value is 199
 export const itemsMaster = { 0: "Cereal" } as const;
 export type ItemIndices = keyof typeof itemsMaster;
 
+// Master of all supported varieties, can support up to 100 varieties for each item
+// Max length of array is 200
 export const itemVarietiesMaster = {
   0: ["Feed Wheat", "Biscuit Wheat", "Milling Wheat", "Barley"],
 } as const; //Where position in array is the variety id

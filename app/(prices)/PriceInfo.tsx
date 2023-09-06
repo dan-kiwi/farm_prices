@@ -3,9 +3,8 @@
 // import { Button, Group, HoverCard, Text } from "@mantine/core";
 // import { IconInfoCircle } from "@tabler/icons-react";
 import { store } from "@/store";
-import { cookies } from "next/headers";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   itemVarietiesMaster,
   itemsMaster,
@@ -14,8 +13,6 @@ import {
 
 export default function PriceInfo() {
   const userPricePreferences = store.getState().userPricePreferences;
-  const supabase = createClientComponentClient();
-  // const price = supabase.from("prices_current").select("*").eq("id", 1);
   const variety = useMemo(() => {
     return itemVarietiesMaster[userPricePreferences.item][
       userPricePreferences.variety
@@ -25,11 +22,39 @@ export default function PriceInfo() {
     return regionsMaster[userPricePreferences.region];
   }, [userPricePreferences.region]);
 
+  const supabase = createClientComponentClient();
+  const [currentPrice, setCurrentPrice] = useState<number>();
+  const currentPriceId = useMemo(() => {
+    return (
+      userPricePreferences.region * 200 ** 2 +
+      userPricePreferences.item * 200 +
+      userPricePreferences.variety
+    );
+  }, [
+    userPricePreferences.region,
+    userPricePreferences.item,
+    userPricePreferences.variety,
+  ]);
+  useEffect(() => {
+    const fetchCurrentPrice = async () => {
+      let { data, error } = await supabase
+        .from("prices_current")
+        .select("price")
+        .eq("region_item_variety", currentPriceId);
+      if (error || !data || data.length !== 1) {
+        console.log(error);
+      } else {
+        setCurrentPrice(data[0].price);
+      }
+    };
+    fetchCurrentPrice();
+  }, [supabase, currentPriceId]);
+
   return (
     <div className="flex flex-row justify-between items-center">
       <div className="flex flex-row gap-2 items-end">
         <h1>
-          {variety}, {region}: $300
+          {variety}, {region}: ${currentPrice ?? "???"}
         </h1>
         <div className="mb-2.5">
           {/*<Group>*/}
