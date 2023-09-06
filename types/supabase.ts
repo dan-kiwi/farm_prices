@@ -36,6 +36,36 @@ export interface Database {
         }
         Relationships: []
       }
+      price_summary: {
+        Row: {
+          created_at: string
+          id: number
+          item: number | null
+          month: number
+          region: number | null
+          variety: number | null
+          year: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          item?: number | null
+          month: number
+          region?: number | null
+          variety?: number | null
+          year?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          item?: number | null
+          month?: number
+          region?: number | null
+          variety?: number | null
+          year?: number | null
+        }
+        Relationships: []
+      }
       prices_cereal: {
         Row: {
           business_name: string | null
@@ -48,7 +78,7 @@ export interface Database {
           region: number
           sale_date: string
           user_id: string | null
-          variety: string
+          variety: number
           verified: boolean
         }
         Insert: {
@@ -62,7 +92,7 @@ export interface Database {
           region: number
           sale_date: string
           user_id?: string | null
-          variety: string
+          variety: number
           verified?: boolean
         }
         Update: {
@@ -76,7 +106,7 @@ export interface Database {
           region?: number
           sale_date?: string
           user_id?: string | null
-          variety?: string
+          variety?: number
           verified?: boolean
         }
         Relationships: [
@@ -92,17 +122,17 @@ export interface Database {
         Row: {
           created_at: string | null
           price: number | null
-          region_item_variety: string
+          region_item_variety: number
         }
         Insert: {
           created_at?: string | null
           price?: number | null
-          region_item_variety: string
+          region_item_variety: number
         }
         Update: {
           created_at?: string | null
           price?: number | null
-          region_item_variety?: string
+          region_item_variety?: number
         }
         Relationships: []
       }
@@ -112,13 +142,13 @@ export interface Database {
           created_at: string | null
           farm_to_farm: boolean
           id: number
-          item: string
+          item: number
           post_code: number
           price: number
-          region: string
+          region: number
           sale_date: string
           user_id: string | null
-          variety: string
+          variety: number
           verified: boolean
         }
         Insert: {
@@ -126,13 +156,13 @@ export interface Database {
           created_at?: string | null
           farm_to_farm: boolean
           id?: number
-          item: string
+          item: number
           post_code: number
           price: number
-          region: string
+          region: number
           sale_date: string
           user_id?: string | null
-          variety: string
+          variety: number
           verified?: boolean
         }
         Update: {
@@ -140,13 +170,13 @@ export interface Database {
           created_at?: string | null
           farm_to_farm?: boolean
           id?: number
-          item?: string
+          item?: number
           post_code?: number
           price?: number
-          region?: string
+          region?: number
           sale_date?: string
           user_id?: string | null
-          variety?: string
+          variety?: number
           verified?: boolean
         }
         Relationships: []
