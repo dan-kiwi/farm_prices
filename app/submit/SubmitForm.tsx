@@ -99,7 +99,7 @@ export default function SubmitForm() {
   >("editing");
   const [regionLocal, setRegionLocal] = useState<RegionIndices>(13);
   const [itemLocal, setItemLocal] = useState<ItemIndices>(0);
-  const [varietyLocal, setVarietyLocal] = useState<number | null>(0);
+  const [varietyLocal, setVarietyLocal] = useState<number>(0);
   const [price, setPrice] = useState<number | undefined>();
   const [businessName, setBusinessName] = useState<string | null>(null);
   const [otherBusinessName, setOtherBusinessName] = useState<string | null>(
@@ -128,7 +128,7 @@ export default function SubmitForm() {
         region: regionLocal,
         item: itemLocal,
         price,
-        variety: varietyLocal ?? "",
+        variety: varietyLocal,
         post_code: postCode,
         farm_to_farm: farmToFarm,
         sale_date: saleDate.toISOString().slice(0, 10),
