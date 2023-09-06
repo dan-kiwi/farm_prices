@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import itemLocationReducer from "./itemLocation";
+import userPricePreferencesReducer from "./userPricePreferences";
 
 export const store = configureStore({
   reducer: {
-    itemLocation: itemLocationReducer,
+    userPricePreferences: userPricePreferencesReducer,
   },
 });
 

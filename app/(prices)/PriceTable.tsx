@@ -1,10 +1,10 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { createStyles, Table, ScrollArea, rem } from "@mantine/core";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/types/supabase";
-import { ItemLocationContext } from "@/context/itemLocation";
+import { store } from "@/store";
 
 type PricesCerealHeader = Array<{
   id: keyof Database["public"]["Tables"]["prices_cereal"]["Row"];
@@ -44,7 +44,7 @@ export default function PriceTable() {
   const [data2, setData2] =
     useState<Database["public"]["Tables"]["prices_cereal"]["Row"][]>();
   const [error, setError] = useState<boolean>();
-  const { itemLocationContext } = useContext(ItemLocationContext);
+  const itemLocation = store.getState().itemLocation;
   const supabase = createClientComponentClient<Database>();
 
   const header: PricesCerealHeader = [
@@ -64,8 +64,8 @@ export default function PriceTable() {
         if (x.error) setError(true);
         else setData2(x.data);
       });
-  }, [itemLocationContext.item, supabase]);
-  // const tableHeader = rows2
+  }, [supabase]);
+
   const rows2 = data2?.map((row) => {
     return (
       <tr key={row.id}>

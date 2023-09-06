@@ -4,7 +4,6 @@ import { HeaderSimple } from "@/app/HeaderSimple";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import Footer from "@/app/Footer";
-import ItemLocationProvider from "@/context/itemLocation";
 
 export const metadata = {
   title: "Farm Prices NZ",
@@ -31,20 +30,18 @@ export default async function RootLayout({
         { link: "/", label: "Prices" },
         { link: "/submit", label: "Submit" },
         { link: "/about", label: "About" },
-        {link: "/login", label: "Login"},
+        { link: "/login", label: "Login" },
       ];
 
   return (
     <html lang="en">
       <body>
         <RootStyleRegistry>
-          <ItemLocationProvider>
-            <HeaderSimple links={headers} />
-            <main className="min-h-screen bg-background flex flex-col items-center p-8 pb-10">
-              {children}
-            </main>
-            <Footer />
-          </ItemLocationProvider>
+          <HeaderSimple links={headers} />
+          <main className="min-h-screen bg-background flex flex-col items-center p-8 pb-10">
+            {children}
+          </main>
+          <Footer />
         </RootStyleRegistry>
       </body>
     </html>

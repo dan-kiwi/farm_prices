@@ -13,13 +13,17 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import { ItemLocationContext } from "@/context/itemLocation";
-import { useContext, useEffect, useState } from "react";
-import { Item, itemsMaster, Region, regionsMaster } from "@/types/regionItem";
+import { useEffect, useState } from "react";
+import {
+  ItemIndices,
+  itemsMaster,
+  itemVarietiesMaster,
+  RegionIndices,
+  regionsMaster,
+} from "@/types/itemRegionMaster";
 import { DatePickerInput, DateValue } from "@mantine/dates";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/types/supabase";
-import { capitalise } from "@/utils/regex";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -88,18 +92,14 @@ const useStyles = createStyles((theme) => ({
 export default function SubmitForm() {
   const { classes } = useStyles();
   const supabase = createClientComponentClient<Database>();
-  const { itemLocationContext } = useContext(ItemLocationContext);
+  //TODO - add redux context
 
   const [formState, setFormState] = useState<
     "editing" | "sending" | "confirmed" | "error"
   >("editing");
-  const [regionLocal, setRegionLocal] = useState<Region>(
-    itemLocationContext.region,
-  );
-  const [itemLocal, setItemLocal] = useState<Item>(itemLocationContext.item);
-  const [varietyLocal, setVarietyLocal] = useState<string | null>(
-    itemLocationContext.variety,
-  );
+  const [regionLocal, setRegionLocal] = useState<RegionIndices>(13);
+  const [itemLocal, setItemLocal] = useState<ItemIndices>(0);
+  const [varietyLocal, setVarietyLocal] = useState<number | null>(0);
   const [price, setPrice] = useState<number | undefined>();
   const [businessName, setBusinessName] = useState<string | null>(null);
   const [otherBusinessName, setOtherBusinessName] = useState<string | null>(
@@ -148,9 +148,10 @@ export default function SubmitForm() {
     return;
   };
   const resetForm = () => {
-    setRegionLocal(itemLocationContext.region);
-    setItemLocal(itemLocationContext.item);
-    setVarietyLocal(itemLocationContext.variety);
+    //TODO fix this
+    // setRegionLocal(itemLocationContext.region);
+    // setItemLocal(itemLocationContext.item);
+    // setVarietyLocal(itemLocationContext.variety);
     setPrice(undefined);
     setBusinessName(null);
     setOtherBusinessName(null);
@@ -203,50 +204,60 @@ export default function SubmitForm() {
           >
             <Select
               label="Region"
-              data={Object.keys(regionsMaster).map((region) => {
+              data={Object.entries(regionsMaster).map((region) => {
+                const [key, regionName] = region;
                 return {
-                  value: region,
-                  label: capitalise(region),
+                  value: key,
+                  label: regionName,
                 };
               })}
-              value={regionLocal}
-              onChange={(value) => setRegionLocal(value as Region)}
+              value={String(regionLocal)}
+              onChange={(value) =>
+                setRegionLocal(Number(value) as RegionIndices)
+              }
             />
             <Select
               label="Item"
-              data={Object.keys(itemsMaster).map((item) => {
+              data={Object.entries(itemsMaster).map((item) => {
+                const [key, itemName] = item;
                 return {
-                  value: item,
-                  label: capitalise(item),
+                  value: key,
+                  label: itemName,
                 };
               })}
-              value={itemLocal}
-              onChange={(value) => setItemLocal(value as Item)}
+              value={String(itemLocal)}
+              onChange={(value) => setItemLocal(Number(value) as ItemIndices)}
             />
             <Select
-              data={itemsMaster[itemLocal].map((variety) => {
+              data={itemVarietiesMaster[itemLocal].map((variety, index) => {
                 return {
-                  value: variety,
-                  label: capitalise(variety),
+                  value: String(index),
+                  label: variety,
                 };
               })}
               label="Variety"
-              value={varietyLocal}
-              onChange={setVarietyLocal}
+              value={String(varietyLocal)}
+              onChange={(value) => setVarietyLocal(Number(value))}
             />
             <TextInput
               label="Sale Price"
               placeholder="Price per ton"
               type="number"
               onChange={(event) => setPrice(Number(event.target.value))}
-              classNames={{ input: classes.input, label: classes.inputLabel }}
+              classNames={{
+                input: classes.input,
+                label: classes.inputLabel,
+              }}
             />
             <DatePickerInput
               valueFormat="DD/MM/YYYY"
               label="Sale Date"
               placeholder="Date on which sale was agreed"
               onChange={(value) => setSaleDate(value)}
-              classNames={{ input: classes.input, label: classes.inputLabel }}
+              classNames={{
+                input: classes.input,
+                label: classes.inputLabel,
+              }}
             />
             <SegmentedControl
               data={["Farm to Farm", "Farm to AgriBusiness"]}
@@ -273,7 +284,10 @@ export default function SubmitForm() {
               placeholder="Your farm's postcode"
               type="number"
               onChange={(event) => setPostCode(Number(event.target.value))}
-              classNames={{ input: classes.input, label: classes.inputLabel }}
+              classNames={{
+                input: classes.input,
+                label: classes.inputLabel,
+              }}
             />
             <Group position="right" mt="md">
               <Button color="red" onClick={resetForm}>

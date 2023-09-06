@@ -1,21 +1,35 @@
+"use client";
+
 // import { Button, Group, HoverCard, Text } from "@mantine/core";
-import { capitalise } from "@/utils/regex";
 // import { IconInfoCircle } from "@tabler/icons-react";
 import { store } from "@/store";
 import { cookies } from "next/headers";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useMemo } from "react";
+import {
+  itemVarietiesMaster,
+  itemsMaster,
+  regionsMaster,
+} from "@/types/itemRegionMaster";
 
 export default function PriceInfo() {
-  const itemLocation = store.getState().itemLocation;
-  const supabase = createServerComponentClient({ cookies });
-  // const price = supabase.from("prices").select("*").eq("id", 1);
+  const userPricePreferences = store.getState().userPricePreferences;
+  const supabase = createClientComponentClient();
+  // const price = supabase.from("prices_current").select("*").eq("id", 1);
+  const variety = useMemo(() => {
+    return itemVarietiesMaster[userPricePreferences.item][
+      userPricePreferences.variety
+    ];
+  }, [userPricePreferences.item, userPricePreferences.variety]);
+  const region = useMemo(() => {
+    return regionsMaster[userPricePreferences.region];
+  }, [userPricePreferences.region]);
 
   return (
     <div className="flex flex-row justify-between items-center">
       <div className="flex flex-row gap-2 items-end">
         <h1>
-          {capitalise(itemLocation.variety ?? "")},{" "}
-          {capitalise(itemLocation.region ?? "")}: $300
+          {variety}, {region}: $300
         </h1>
         <div className="mb-2.5">
           {/*<Group>*/}
