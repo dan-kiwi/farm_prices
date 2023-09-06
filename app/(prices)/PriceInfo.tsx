@@ -13,14 +13,11 @@ import {
 
 export default function PriceInfo() {
   const userPricePreferences = store.getState().userPricePreferences;
-  const variety = useMemo(() => {
-    return itemVarietiesMaster[userPricePreferences.item][
+  const region = regionsMaster[userPricePreferences.region];
+  const variety =
+    itemVarietiesMaster[userPricePreferences.item][
       userPricePreferences.variety
     ];
-  }, [userPricePreferences.item, userPricePreferences.variety]);
-  const region = useMemo(() => {
-    return regionsMaster[userPricePreferences.region];
-  }, [userPricePreferences.region]);
 
   const supabase = createClientComponentClient();
   const [currentPrice, setCurrentPrice] = useState<number>();
