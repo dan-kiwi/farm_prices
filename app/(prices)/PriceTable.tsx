@@ -44,7 +44,7 @@ export default function PriceTable() {
   const [data2, setData2] =
     useState<Database["public"]["Tables"]["prices_cereal"]["Row"][]>();
   const [error, setError] = useState<boolean>();
-  const itemLocation = store.getState().itemLocation;
+  const userPricePreferences = store.getState().userPricePreferences;
   const supabase = createClientComponentClient<Database>();
 
   const header: PricesCerealHeader = [
