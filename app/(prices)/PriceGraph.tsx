@@ -1,8 +1,8 @@
 "use client";
 
-// import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Card, Title, LineChart } from "@tremor/react";
-// import { store } from "@/store";
+import { store } from "@/store";
 import {
   itemVarietiesMaster,
   itemsMaster,
@@ -48,40 +48,40 @@ type ChartData = {
 };
 
 export default function PriceGraph() {
-  // const supabase = createClientComponentClient();
-  // const userPricePreferences = store.getState().userPricePreferences;
-  const region = 0; //regionsMaster[userPricePreferences.region];
-  const variety = 0;
-  // itemVarietiesMaster[userPricePreferences.item][
-  //   userPricePreferences.variety
-  // ];
+  const supabase = createClientComponentClient();
+  const userPricePreferences = store.getState().userPricePreferences;
+  const region = regionsMaster[userPricePreferences.region];
+  const variety =
+    itemVarietiesMaster[userPricePreferences.item][
+      userPricePreferences.variety
+    ];
 
   const chartCategories = [`${variety}, ${region}`];
   const [chartData2, setChartData2] = useState<ChartData[]>();
   const [error, setError] = useState<boolean>();
-  // useEffect(() => {
-  //   const fetchChartData = async () => {
-  //     let { data, error } = await supabase
-  //       .from("prices_summary")
-  //       .select()
-  //       .eq("variety", userPricePreferences.variety)
-  //       .eq("item", userPricePreferences.item)
-  //       .eq("region", userPricePreferences.region);
-  //     if (error || !data || data.length === 0) {
-  //       console.error(error);
-  //     } else {
-  //       console.log(data);
-  //     }
-  //   };
-  //   fetchChartData();
-  // }, [
-  //   supabase,
-  //   region,
-  //   variety,
-  //   userPricePreferences.variety,
-  //   userPricePreferences.item,
-  //   userPricePreferences.region,
-  // ]);
+  useEffect(() => {
+    const fetchChartData = async () => {
+      let { data, error } = await supabase
+        .from("prices_summary")
+        .select()
+        .eq("variety", userPricePreferences.variety)
+        .eq("item", userPricePreferences.item)
+        .eq("region", userPricePreferences.region);
+      if (error || !data || data.length === 0) {
+        console.error(error);
+      } else {
+        console.log(data);
+      }
+    };
+    fetchChartData();
+  }, [
+    supabase,
+    region,
+    variety,
+    userPricePreferences.variety,
+    userPricePreferences.item,
+    userPricePreferences.region,
+  ]);
   return (
     <div>
       {/* <Title>Export/Import Growth Rates (1970 to 2021)</Title> */}
