@@ -2,50 +2,43 @@
 
 // import { Button, Group, HoverCard, Text } from "@mantine/core";
 // import { IconInfoCircle } from "@tabler/icons-react";
-// import { store } from "@/store";
+import { store } from "@/store";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useState, useEffect, useMemo } from "react";
-// import {
-//   itemVarietiesMaster,
-//   itemsMaster,
-//   regionsMaster,
-// } from "@/types/itemRegionMaster";
+import {
+  itemVarietiesMaster,
+  itemsMaster,
+  regionsMaster,
+} from "@/types/itemRegionMaster";
 
 export default function PriceInfo() {
-  // const userPricePreferences = store.getState().userPricePreferences;
-  const region = 0; //regionsMaster[userPricePreferences.region];
-  const variety = 0;
-  // itemVarietiesMaster[userPricePreferences.item][
-  //   userPricePreferences.variety
-  // ];
+  const userPricePreferences = store.getState().userPricePreferences;
+  const region = regionsMaster[userPricePreferences.region];
+  const variety =
+    itemVarietiesMaster[userPricePreferences.item][
+      userPricePreferences.variety
+    ];
 
   const supabase = createClientComponentClient();
   const [currentPrice, setCurrentPrice] = useState<number>(400);
-  const currentPriceId = 520000; //useMemo(() => {
-  //   return (
-  //     userPricePreferences.region * 200 ** 2 +
-  //     userPricePreferences.item * 200 +
-  //     userPricePreferences.variety
-  //   );
-  // }, [
-  //   userPricePreferences.region,
-  //   userPricePreferences.item,
-  //   userPricePreferences.variety,
-  // ]);
-  // useEffect(() => {
-  //   const fetchCurrentPrice = async () => {
-  //     let { data, error } = await supabase
-  //       .from("prices_current")
-  //       .select("price")
-  //       .eq("region_item_variety", currentPriceId);
-  //     if (error || !data || data.length !== 1) {
-  //       console.log(error);
-  //     } else {
-  //       setCurrentPrice(data[0].price);
-  //     }
-  //   };
-  //   fetchCurrentPrice();
-  // }, [supabase, currentPriceId]);
+  const currentPriceId =
+    userPricePreferences.region * 200 ** 2 +
+    userPricePreferences.item * 200 +
+    userPricePreferences.variety;
+  useEffect(() => {
+    const fetchCurrentPrice = async () => {
+      let { data, error } = await supabase
+        .from("prices_current")
+        .select("price")
+        .eq("region_item_variety", currentPriceId);
+      if (error || !data || data.length !== 1) {
+        console.log(error);
+      } else {
+        setCurrentPrice(data[0].price);
+      }
+    };
+    fetchCurrentPrice();
+  }, [supabase, currentPriceId]);
 
   return (
     <div className="flex flex-row justify-between items-center">
