@@ -5,6 +5,8 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { itemVarietiesMaster, regionsMaster } from "@/types/itemRegionMaster";
 import { cookies } from "next/headers";
 
+export const dynamic = "force-dynamic";
+
 export default function PriceInfo() {
   const userPricePreferences = store.getState().userPricePreferences;
   const region = regionsMaster[userPricePreferences.region];
