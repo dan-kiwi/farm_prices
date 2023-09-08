@@ -3,15 +3,15 @@
 import { store } from "@/store";
 // import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 // import { useState, useEffect, useMemo } from "react";
-// import {
-//   itemVarietiesMaster,
-//   itemsMaster,
-//   regionsMaster,
-// } from "@/types/itemRegionMaster";
+import {
+  itemVarietiesMaster,
+  itemsMaster,
+  regionsMaster,
+} from "@/types/itemRegionMaster";
 
 export default function PriceInfo() {
   const userPricePreferences = store.getState().userPricePreferences;
-  const region = userPricePreferences.region;
+  const region = regionsMaster[userPricePreferences.region];
   const variety = 0;
   // itemVarietiesMaster[userPricePreferences.item][
   // userPricePreferences.variety
