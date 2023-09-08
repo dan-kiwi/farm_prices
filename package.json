@@ -33,14 +33,14 @@
     "typescript": "^5.2.2"
   },
   "devDependencies": {
-    "@types/node": "^20.4.2",
-    "@types/react": "^18.2.15",
+    "@types/node": "^20.5.9",
+    "@types/react": "^18.2.21",
     "@types/react-dom": "^18.2.7",
     "encoding": "^0.1.13",
-    "eslint": "^8.44.0",
-    "eslint-config-next": "^13.4.10",
-    "eslint-config-prettier": "^8.8.0",
+    "eslint": "^8.48.0",
+    "eslint-config-next": "^13.4.19",
+    "eslint-config-prettier": "^9.0.0",
     "prettier": "^3.0.0",
-    "supabase": "^1.77.9"
+    "supabase": "^1.93.0"
   }
 }
