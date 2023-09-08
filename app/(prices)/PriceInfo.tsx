@@ -1,3 +1,5 @@
+"use server";
+
 // import { Button, Group, HoverCard, Text } from "@mantine/core";
 // import { IconInfoCircle } from "@tabler/icons-react";
 import { store } from "@/store";
@@ -5,9 +7,9 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { itemVarietiesMaster, regionsMaster } from "@/types/itemRegionMaster";
 import { cookies } from "next/headers";
 
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 
-export default function PriceInfo() {
+export default async function PriceInfo() {
   const userPricePreferences = store.getState().userPricePreferences;
   const region = regionsMaster[userPricePreferences.region];
   const variety =
@@ -17,6 +19,7 @@ export default function PriceInfo() {
   const currentPrice = 0;
 
   const supabase = createServerComponentClient({ cookies });
+
   // const [currentPrice, setCurrentPrice] = useState<number>(400);
   // const currentPriceId =
   // userPricePreferences.region * 200 ** 2 +
