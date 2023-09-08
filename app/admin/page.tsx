@@ -1,15 +1,27 @@
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import AdminClient from "./adminClient";
+"use client";
 
-export default async function Admin() {
-  const supabase = createServerComponentClient({ cookies });
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+import { Button } from "@mantine/core";
+import Link from "next/link";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter } from "next/navigation";
 
-  if (!user) return redirect("/login");
+export default function Admin() {
+  const supabase = createClientComponentClient();
+  const router = useRouter();
 
-  return <AdminClient />;
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.push("/");
+  };
+
+  return (
+    <div>
+      <Button>
+        <Link href={"/admin/approve"}>Approve Prices</Link>
+      </Button>
+      <Button color="red" onClick={handleSignOut}>
+        Log Out
+      </Button>
+    </div>
+  );
 }
