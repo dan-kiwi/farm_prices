@@ -1,8 +1,9 @@
 // import { Button, Group, HoverCard, Text } from "@mantine/core";
 // import { IconInfoCircle } from "@tabler/icons-react";
 import { store } from "@/store";
-// import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { itemVarietiesMaster, regionsMaster } from "@/types/itemRegionMaster";
+import { cookies } from "next/headers";
 
 export default function PriceInfo() {
   const userPricePreferences = store.getState().userPricePreferences;
@@ -13,7 +14,7 @@ export default function PriceInfo() {
     ];
   const currentPrice = 0;
 
-  // const supabase = createClientComponentClient();
+  const supabase = createServerComponentClient({ cookies });
   // const [currentPrice, setCurrentPrice] = useState<number>(400);
   // const currentPriceId =
   // userPricePreferences.region * 200 ** 2 +
