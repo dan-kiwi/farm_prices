@@ -1,6 +1,6 @@
 // import { Button, Group, HoverCard, Text } from "@mantine/core";
 // import { IconInfoCircle } from "@tabler/icons-react";
-// import { store } from "@/store";
+import { store } from "@/store";
 // import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 // import { useState, useEffect, useMemo } from "react";
 // import {
@@ -10,8 +10,8 @@
 // } from "@/types/itemRegionMaster";
 
 export default function PriceInfo() {
-  // const userPricePreferences = store.getState().userPricePreferences;
-  const region = 0; // regionsMaster[userPricePreferences.region];
+  const userPricePreferences = store.getState().userPricePreferences;
+  const region = userPricePreferences.region;
   const variety = 0;
   // itemVarietiesMaster[userPricePreferences.item][
   // userPricePreferences.variety
