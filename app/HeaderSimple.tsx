@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Burger,
   Container,
@@ -13,6 +13,8 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { UserResponse } from "@supabase/supabase-js";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -67,16 +69,35 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface HeaderSimpleProps {
-  links: { link: string; label: string }[];
-}
+export function HeaderSimple() {
+  const supabase = createClientComponentClient();
+  const [user, setUser] = useState<UserResponse>();
+  useEffect(() => {
+    const getUser = async () => {
+      const user = await supabase.auth.getUser();
+      setUser(user);
+    };
+    getUser();
+  }, [supabase.auth]);
 
-export function HeaderSimple({ links }: HeaderSimpleProps) {
+  const links = true
+    ? [
+        { link: "/", label: "Prices" },
+        { link: "/submit", label: "Submit" },
+        { link: "/about", label: "About" },
+        { link: "/admin", label: "Admin" },
+      ]
+    : [
+        { link: "/", label: "Prices" },
+        { link: "/submit", label: "Submit" },
+        { link: "/about", label: "About" },
+        { link: "/login", label: "Login" },
+      ];
   const pathname = usePathname();
-  const [opened, { toggle }] = useDisclosure(false);
   const [active, setActive] = useState(
-    (links.find((link) => link.link === pathname) ?? links[0]).link
+    (links.find((link) => link.link === pathname) ?? links[0]).link,
   );
+  const [opened, { toggle }] = useDisclosure(false);
   const { classes, cx } = useStyles();
 
   const items = links.map((link) => (
@@ -97,7 +118,9 @@ export function HeaderSimple({ links }: HeaderSimpleProps) {
   return (
     <Header height={60}>
       <Container className={classes.header}>
-        <Text size="xl" weight={700}>PastureMarket Logo</Text>
+        <Text size="xl" weight={700}>
+          PastureMarket Logo
+        </Text>
         <Group spacing={5} className={classes.links}>
           {items}
         </Group>
