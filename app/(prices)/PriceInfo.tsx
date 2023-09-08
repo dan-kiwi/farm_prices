@@ -2,20 +2,15 @@
 // import { IconInfoCircle } from "@tabler/icons-react";
 import { store } from "@/store";
 // import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-// import { useState, useEffect, useMemo } from "react";
-import {
-  itemVarietiesMaster,
-  itemsMaster,
-  regionsMaster,
-} from "@/types/itemRegionMaster";
+import { itemVarietiesMaster, regionsMaster } from "@/types/itemRegionMaster";
 
 export default function PriceInfo() {
   const userPricePreferences = store.getState().userPricePreferences;
   const region = regionsMaster[userPricePreferences.region];
-  const variety = 0;
-  // itemVarietiesMaster[userPricePreferences.item][
-  // userPricePreferences.variety
-  // ];
+  const variety =
+    itemVarietiesMaster[userPricePreferences.item][
+      userPricePreferences.variety
+    ];
   const currentPrice = 0;
 
   // const supabase = createClientComponentClient();
