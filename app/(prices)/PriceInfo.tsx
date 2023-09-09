@@ -7,6 +7,7 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { itemVarietiesMaster, regionsMaster } from "@/types/itemRegionMaster";
 import { cookies } from "next/headers";
 import PriceInfoIcon from "./PriceInfoIcon";
+import { Database } from "@/types/supabase";
 
 export default async function PriceInfo() {
   const userPricePreferences = store.getState().userPricePreferences;
@@ -19,12 +20,12 @@ export default async function PriceInfo() {
     userPricePreferences.region * 200 ** 2 +
     userPricePreferences.item * 200 +
     userPricePreferences.variety;
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createServerComponentClient<Database>({ cookies });
   const { data, error } = await supabase
     .from("prices_current")
     .select()
     .eq("region_item_variety", currentPriceId);
-  const currentPrice = data?.[0]?.price;
+  const currentPrice = data?.[0].price;
 
   return (
     <div className="flex flex-row justify-between items-center">

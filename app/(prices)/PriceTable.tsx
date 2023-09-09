@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { createStyles, Table, ScrollArea, rem } from "@mantine/core";
+import { createStyles, Table, ScrollArea, rem, Paper } from "@mantine/core";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/types/supabase";
 import { store } from "@/store";
@@ -36,6 +36,17 @@ const useStyles = createStyles((theme) => ({
   scrolled: {
     boxShadow: theme.shadows.sm,
   },
+
+  wrapper: {
+    display: "flex",
+    backgroundColor:
+      theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
+    borderRadius: theme.radius.lg,
+    padding: rem(4),
+    border: `${rem(1)} solid ${
+      theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.colors.gray[2]
+    }`,
+  },
 }));
 
 export default function PriceTable() {
@@ -44,7 +55,7 @@ export default function PriceTable() {
   const [data2, setData2] =
     useState<Database["public"]["Tables"]["prices_cereal"]["Row"][]>();
   const [error, setError] = useState<boolean>();
-  // const userPricePreferences = store.getState().userPricePreferences;
+  const userPricePreferences = store.getState().userPricePreferences;
   const supabase = createClientComponentClient<Database>();
 
   const header: PricesCerealHeader = [
@@ -60,11 +71,12 @@ export default function PriceTable() {
     supabase
       .from(`prices_cereal`)
       .select()
+      .eq("region", userPricePreferences.region)
       .then((x) => {
         if (x.error) setError(true);
         else setData2(x.data);
       });
-  }, [supabase]);
+  }, [supabase, userPricePreferences.region]);
 
   const rows2 = data2?.map((row) => {
     return (
@@ -92,20 +104,26 @@ export default function PriceTable() {
   });
 
   return (
-    <ScrollArea
-      h={300}
-      onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
-    >
-      <Table miw={700}>
-        <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
-          <tr>
-            {header.map((col) => {
-              return <th key={col.id}>{col.label}</th>;
-            })}
-          </tr>
-        </thead>
-        <tbody>{rows2}</tbody>
-      </Table>
-    </ScrollArea>
+    <Paper shadow="md" radius="lg" mt="lg">
+      <div className={classes.wrapper}>
+        <ScrollArea
+          h={300}
+          onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+        >
+          <Table miw={700} mt="sm">
+            <thead
+              className={cx(classes.header, { [classes.scrolled]: scrolled })}
+            >
+              <tr>
+                {header.map((col) => {
+                  return <th key={col.id}>{col.label}</th>;
+                })}
+              </tr>
+            </thead>
+            <tbody>{rows2}</tbody>
+          </Table>
+        </ScrollArea>
+      </div>
+    </Paper>
   );
 }

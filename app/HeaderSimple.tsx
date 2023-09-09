@@ -15,6 +15,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { UserResponse } from "@supabase/supabase-js";
+import { Database } from "@/types/supabase";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -70,7 +71,7 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export function HeaderSimple() {
-  const supabase = createClientComponentClient();
+  const supabase = createClientComponentClient<Database>();
   const [user, setUser] = useState<UserResponse>();
   useEffect(() => {
     const getUser = async () => {

@@ -4,9 +4,10 @@ import { Button } from "@mantine/core";
 import Link from "next/link";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
+import { Database } from "@/types/supabase";
 
 export default function Admin() {
-  const supabase = createClientComponentClient();
+  const supabase = createClientComponentClient<Database>();
   const router = useRouter();
 
   const handleSignOut = async () => {
