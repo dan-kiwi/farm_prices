@@ -4,229 +4,232 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[];
+  | Json[]
 
 export interface Database {
   public: {
     Tables: {
       feedback: {
         Row: {
-          created_at: string | null;
-          email: string | null;
-          id: number;
-          message: string | null;
-          name: string | null;
-          subject: string | null;
-        };
+          created_at: string | null
+          email: string | null
+          id: number
+          message: string | null
+          name: string | null
+          subject: string | null
+        }
         Insert: {
-          created_at?: string | null;
-          email?: string | null;
-          id?: number;
-          message?: string | null;
-          name?: string | null;
-          subject?: string | null;
-        };
+          created_at?: string | null
+          email?: string | null
+          id?: number
+          message?: string | null
+          name?: string | null
+          subject?: string | null
+        }
         Update: {
-          created_at?: string | null;
-          email?: string | null;
-          id?: number;
-          message?: string | null;
-          name?: string | null;
-          subject?: string | null;
-        };
-        Relationships: [];
-      };
-      prices_summary: {
-        Row: {
-          created_at: string;
-          id: number;
-          item: number | null;
-          month: number;
-          region: number | null;
-          variety: number | null;
-          year: number | null;
-        };
-        Insert: {
-          created_at?: string;
-          id?: number;
-          item?: number | null;
-          month: number;
-          region?: number | null;
-          variety?: number | null;
-          year?: number | null;
-        };
-        Update: {
-          created_at?: string;
-          id?: number;
-          item?: number | null;
-          month?: number;
-          region?: number | null;
-          variety?: number | null;
-          year?: number | null;
-        };
-        Relationships: [];
-      };
+          created_at?: string | null
+          email?: string | null
+          id?: number
+          message?: string | null
+          name?: string | null
+          subject?: string | null
+        }
+        Relationships: []
+      }
       prices_cereal: {
         Row: {
-          business_name: string | null;
-          created_at: string | null;
-          current: boolean | null;
-          farm_to_farm: boolean;
-          id: number;
-          post_code: number | null;
-          price: number;
-          region: number;
-          sale_date: string;
-          user_id: string | null;
-          variety: number;
-          verified: boolean;
-        };
+          business_name: string | null
+          created_at: string | null
+          current: boolean | null
+          farm_to_farm: boolean
+          id: number
+          post_code: number | null
+          price: number
+          region: number
+          sale_date: string
+          user_id: string | null
+          variety: number
+          verified: boolean
+        }
         Insert: {
-          business_name?: string | null;
-          created_at?: string | null;
-          current?: boolean | null;
-          farm_to_farm: boolean;
-          id?: number;
-          post_code?: number | null;
-          price: number;
-          region: number;
-          sale_date: string;
-          user_id?: string | null;
-          variety: number;
-          verified?: boolean;
-        };
+          business_name?: string | null
+          created_at?: string | null
+          current?: boolean | null
+          farm_to_farm: boolean
+          id?: number
+          post_code?: number | null
+          price: number
+          region: number
+          sale_date: string
+          user_id?: string | null
+          variety: number
+          verified?: boolean
+        }
         Update: {
-          business_name?: string | null;
-          created_at?: string | null;
-          current?: boolean | null;
-          farm_to_farm?: boolean;
-          id?: number;
-          post_code?: number | null;
-          price?: number;
-          region?: number;
-          sale_date?: string;
-          user_id?: string | null;
-          variety?: number;
-          verified?: boolean;
-        };
+          business_name?: string | null
+          created_at?: string | null
+          current?: boolean | null
+          farm_to_farm?: boolean
+          id?: number
+          post_code?: number | null
+          price?: number
+          region?: number
+          sale_date?: string
+          user_id?: string | null
+          variety?: number
+          verified?: boolean
+        }
         Relationships: [
           {
-            foreignKeyName: "prices_cereal_user_id_fkey";
-            columns: ["user_id"];
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
+            foreignKeyName: "prices_cereal_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       prices_current: {
         Row: {
-          created_at: string | null;
-          price: number | null;
-          region_item_variety: number;
-        };
+          created_at: string | null
+          price: number | null
+          region_item_variety: number
+        }
         Insert: {
-          created_at?: string | null;
-          price?: number | null;
-          region_item_variety: number;
-        };
+          created_at?: string | null
+          price?: number | null
+          region_item_variety: number
+        }
         Update: {
-          created_at?: string | null;
-          price?: number | null;
-          region_item_variety?: number;
-        };
-        Relationships: [];
-      };
+          created_at?: string | null
+          price?: number | null
+          region_item_variety?: number
+        }
+        Relationships: []
+      }
+      prices_summary: {
+        Row: {
+          created_at: string
+          id: number
+          item: number | null
+          month: number
+          price: number
+          region: number | null
+          variety: number | null
+          year: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          item?: number | null
+          month: number
+          price: number
+          region?: number | null
+          variety?: number | null
+          year?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          item?: number | null
+          month?: number
+          price?: number
+          region?: number | null
+          variety?: number | null
+          year?: number | null
+        }
+        Relationships: []
+      }
       prices_unapproved: {
         Row: {
-          business_name: string | null;
-          created_at: string | null;
-          farm_to_farm: boolean;
-          id: number;
-          item: number;
-          post_code: number;
-          price: number;
-          region: number;
-          sale_date: string;
-          user_id: string | null;
-          variety: number;
-          verified: boolean;
-        };
+          business_name: string | null
+          created_at: string | null
+          farm_to_farm: boolean
+          id: number
+          item: number
+          post_code: number
+          price: number
+          region: number
+          sale_date: string
+          user_id: string | null
+          variety: number
+          verified: boolean
+        }
         Insert: {
-          business_name?: string | null;
-          created_at?: string | null;
-          farm_to_farm: boolean;
-          id?: number;
-          item: number;
-          post_code: number;
-          price: number;
-          region: number;
-          sale_date: string;
-          user_id?: string | null;
-          variety: number;
-          verified?: boolean;
-        };
+          business_name?: string | null
+          created_at?: string | null
+          farm_to_farm: boolean
+          id?: number
+          item: number
+          post_code: number
+          price: number
+          region: number
+          sale_date: string
+          user_id?: string | null
+          variety: number
+          verified?: boolean
+        }
         Update: {
-          business_name?: string | null;
-          created_at?: string | null;
-          farm_to_farm?: boolean;
-          id?: number;
-          item?: number;
-          post_code?: number;
-          price?: number;
-          region?: number;
-          sale_date?: string;
-          user_id?: string | null;
-          variety?: number;
-          verified?: boolean;
-        };
-        Relationships: [];
-      };
+          business_name?: string | null
+          created_at?: string | null
+          farm_to_farm?: boolean
+          id?: number
+          item?: number
+          post_code?: number
+          price?: number
+          region?: number
+          sale_date?: string
+          user_id?: string | null
+          variety?: number
+          verified?: boolean
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
-          avatar_url: string | null;
-          full_name: string | null;
-          id: string;
-          updated_at: string | null;
-          username: string | null;
-          website: string | null;
-        };
+          avatar_url: string | null
+          full_name: string | null
+          id: string
+          updated_at: string | null
+          username: string | null
+          website: string | null
+        }
         Insert: {
-          avatar_url?: string | null;
-          full_name?: string | null;
-          id: string;
-          updated_at?: string | null;
-          username?: string | null;
-          website?: string | null;
-        };
+          avatar_url?: string | null
+          full_name?: string | null
+          id: string
+          updated_at?: string | null
+          username?: string | null
+          website?: string | null
+        }
         Update: {
-          avatar_url?: string | null;
-          full_name?: string | null;
-          id?: string;
-          updated_at?: string | null;
-          username?: string | null;
-          website?: string | null;
-        };
+          avatar_url?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string | null
+          username?: string | null
+          website?: string | null
+        }
         Relationships: [
           {
-            foreignKeyName: "profiles_id_fkey";
-            columns: ["id"];
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-    };
+            foreignKeyName: "profiles_id_fkey"
+            columns: ["id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+    }
     Views: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     Functions: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     Enums: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
+      [_ in never]: never
+    }
+  }
 }
