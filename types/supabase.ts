@@ -11,7 +11,7 @@ export interface Database {
     Tables: {
       feedback: {
         Row: {
-          created_at: string | null
+          created_at: string
           email: string | null
           id: number
           message: string | null
@@ -19,7 +19,7 @@ export interface Database {
           subject: string | null
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           email?: string | null
           id?: number
           message?: string | null
@@ -27,7 +27,7 @@ export interface Database {
           subject?: string | null
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           email?: string | null
           id?: number
           message?: string | null
@@ -39,7 +39,7 @@ export interface Database {
       prices_cereal: {
         Row: {
           business_name: string | null
-          created_at: string | null
+          created_at: string
           current: boolean | null
           farm_to_farm: boolean
           id: number
@@ -53,7 +53,7 @@ export interface Database {
         }
         Insert: {
           business_name?: string | null
-          created_at?: string | null
+          created_at?: string
           current?: boolean | null
           farm_to_farm: boolean
           id?: number
@@ -67,7 +67,7 @@ export interface Database {
         }
         Update: {
           business_name?: string | null
-          created_at?: string | null
+          created_at?: string
           current?: boolean | null
           farm_to_farm?: boolean
           id?: number
@@ -90,18 +90,18 @@ export interface Database {
       }
       prices_current: {
         Row: {
-          created_at: string | null
-          price: number | null
+          created_at: string
+          price: number
           region_item_variety: number
         }
         Insert: {
-          created_at?: string | null
-          price?: number | null
+          created_at?: string
+          price: number
           region_item_variety: number
         }
         Update: {
-          created_at?: string | null
-          price?: number | null
+          created_at?: string
+          price?: number
           region_item_variety?: number
         }
         Relationships: []
@@ -110,39 +110,39 @@ export interface Database {
         Row: {
           created_at: string
           id: number
-          item: number | null
+          item: number
           month: number
           price: number
-          region: number | null
-          variety: number | null
-          year: number | null
+          region: number
+          variety: number
+          year: number
         }
         Insert: {
           created_at?: string
           id?: number
-          item?: number | null
+          item: number
           month: number
           price: number
-          region?: number | null
-          variety?: number | null
-          year?: number | null
+          region: number
+          variety: number
+          year: number
         }
         Update: {
           created_at?: string
           id?: number
-          item?: number | null
+          item?: number
           month?: number
           price?: number
-          region?: number | null
-          variety?: number | null
-          year?: number | null
+          region?: number
+          variety?: number
+          year?: number
         }
         Relationships: []
       }
       prices_unapproved: {
         Row: {
           business_name: string | null
-          created_at: string | null
+          created_at: string
           farm_to_farm: boolean
           id: number
           item: number
@@ -156,7 +156,7 @@ export interface Database {
         }
         Insert: {
           business_name?: string | null
-          created_at?: string | null
+          created_at?: string
           farm_to_farm: boolean
           id?: number
           item: number
@@ -170,7 +170,7 @@ export interface Database {
         }
         Update: {
           business_name?: string | null
-          created_at?: string | null
+          created_at?: string
           farm_to_farm?: boolean
           id?: number
           item?: number
