@@ -4,11 +4,13 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Card, Title, LineChart } from "@tremor/react";
 import { store } from "@/store";
 import {
-  itemVarietiesMaster,
-  itemsMaster,
+  RegionIndices,
+  varietiesMaster,
   regionsMaster,
+  ItemIndices,
 } from "@/types/itemRegionMaster";
 import { useEffect, useState } from "react";
+import { Database } from "@/types/supabase";
 
 const chartdata = [
   {
@@ -39,8 +41,7 @@ const chartdata = [
   //...
 ];
 
-const dataFormatter = (number: number) =>
-  `${Intl.NumberFormat("us").format(number).toString()}%`;
+const dataFormatter = (number: number) => `$${number.toFixed(0)}`;
 
 type ChartData = {
   monthAndYear: string;
@@ -48,16 +49,14 @@ type ChartData = {
 };
 
 export default function PriceGraph() {
-  const supabase = createClientComponentClient();
+  const supabase = createClientComponentClient<Database>();
   const userPricePreferences = store.getState().userPricePreferences;
   const region = regionsMaster[userPricePreferences.region];
   const variety =
-    itemVarietiesMaster[userPricePreferences.item][
-      userPricePreferences.variety
-    ];
+    varietiesMaster[userPricePreferences.item][userPricePreferences.variety];
 
   const chartCategories = [`${variety}, ${region}`];
-  const [chartData2, setChartData2] = useState<ChartData[]>();
+  const [chartData2, setChartData2] = useState<ChartData[]>([]);
   const [error, setError] = useState<boolean>();
   useEffect(() => {
     const fetchChartData = async () => {
@@ -70,7 +69,31 @@ export default function PriceGraph() {
       if (error || !data || data.length === 0) {
         console.error(error);
       } else {
-        console.log(data);
+        console.log("Supabase data: ", data);
+        const parsedData: {
+          [key: string]: { [key: string]: number };
+        } = {};
+        data.forEach((x) => {
+          const monthAndYear = `${x.month}/${x.year}`;
+          if (!parsedData[monthAndYear]) {
+            parsedData[monthAndYear] = {};
+          }
+          const key = `${varietiesMaster[x.item as ItemIndices][x.variety]}, ${
+            regionsMaster[x.region as RegionIndices]
+          }`;
+          parsedData[monthAndYear][key] = x.price;
+        });
+        console.log("Parsed data: ", parsedData);
+        const chartData: ChartData[] = [];
+        Object.keys(parsedData).forEach((monthAndYear) => {
+          const row: ChartData = { monthAndYear };
+          Object.keys(parsedData[monthAndYear]).forEach((variety) => {
+            row[variety] = parsedData[monthAndYear][variety];
+          });
+          chartData.push(row);
+        });
+        console.log("Chart data: ", chartData);
+        setChartData2(chartData);
       }
     };
     fetchChartData();
@@ -87,8 +110,8 @@ export default function PriceGraph() {
       {/* <Title>Export/Import Growth Rates (1970 to 2021)</Title> */}
       <LineChart
         className="mt-6"
-        data={chartdata}
-        index="year"
+        data={chartData2}
+        index="monthAndYear"
         categories={chartCategories}
         colors={["emerald", "gray"]}
         valueFormatter={dataFormatter}

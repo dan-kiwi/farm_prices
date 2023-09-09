@@ -25,6 +25,6 @@ export type ItemIndices = keyof typeof itemsMaster;
 
 // Master of all supported varieties, can support up to 100 varieties for each item
 // Max length of array is 200
-export const itemVarietiesMaster = {
+export const varietiesMaster = {
   0: ["Feed Wheat", "Biscuit Wheat", "Milling Wheat", "Barley"],
 } as const; //Where position in array is the variety id

@@ -4,7 +4,7 @@
 // import { IconInfoCircle } from "@tabler/icons-react";
 import { store } from "@/store";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { itemVarietiesMaster, regionsMaster } from "@/types/itemRegionMaster";
+import { varietiesMaster, regionsMaster } from "@/types/itemRegionMaster";
 import { cookies } from "next/headers";
 import PriceInfoIcon from "./PriceInfoIcon";
 import { Database } from "@/types/supabase";
@@ -13,9 +13,7 @@ export default async function PriceInfo() {
   const userPricePreferences = store.getState().userPricePreferences;
   const region = regionsMaster[userPricePreferences.region];
   const variety =
-    itemVarietiesMaster[userPricePreferences.item][
-      userPricePreferences.variety
-    ];
+    varietiesMaster[userPricePreferences.item][userPricePreferences.variety];
   const currentPriceId =
     userPricePreferences.region * 200 ** 2 +
     userPricePreferences.item * 200 +

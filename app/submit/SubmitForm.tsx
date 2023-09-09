@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import {
   ItemIndices,
   itemsMaster,
-  itemVarietiesMaster,
+  varietiesMaster,
   RegionIndices,
   regionsMaster,
 } from "@/types/itemRegionMaster";
@@ -229,7 +229,7 @@ export default function SubmitForm() {
               onChange={(value) => setItemLocal(Number(value) as ItemIndices)}
             />
             <Select
-              data={itemVarietiesMaster[itemLocal].map((variety, index) => {
+              data={varietiesMaster[itemLocal].map((variety, index) => {
                 return {
                   value: String(index),
                   label: variety,
