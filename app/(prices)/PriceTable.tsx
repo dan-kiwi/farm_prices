@@ -104,8 +104,8 @@ export default function PriceTable() {
   });
 
   return (
-    <Paper shadow="md" radius="lg" mt="lg">
-      <div className={classes.wrapper}>
+    <Paper shadow="md" radius="md" mt="lg">
+      <div>
         <ScrollArea
           h={300}
           onScrollPositionChange={({ y }) => setScrolled(y !== 0)}

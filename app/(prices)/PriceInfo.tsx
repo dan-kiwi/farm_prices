@@ -1,7 +1,5 @@
 "use server";
 
-// import { Button, Group, HoverCard, Text } from "@mantine/core";
-// import { IconInfoCircle } from "@tabler/icons-react";
 import { store } from "@/store";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { varietiesMaster, regionsMaster } from "@/types/itemRegionMaster";
@@ -31,9 +29,10 @@ export default async function PriceInfo() {
         <h1>
           {variety}, {region}: ${currentPrice ?? "???"}
         </h1>
-        <div className="mb-2.5">{/* <PriceInfoIcon /> */}</div>
+        <div className="mb-2.5">
+          <PriceInfoIcon />
+        </div>
       </div>
-      {/*<Button>Change This</Button>*/}
     </div>
   );
 }

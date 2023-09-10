@@ -18,7 +18,7 @@ export default function RootLayout({
       <body>
         <RootStyleRegistry>
           <HeaderSimple />
-          <main className="min-h-screen bg-background flex flex-col items-center p-8 pb-10">
+          <main className="min-h-screen bg-background flex flex-col items-center pt-8 pl-4 pr-4 pb-10 max-w-[60rem] ml-auto mr-auto">
             {children}
           </main>
           <Footer />

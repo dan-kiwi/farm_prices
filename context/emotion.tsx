@@ -23,7 +23,13 @@ export default function RootStyleRegistry({
 
   return (
     <CacheProvider value={cache}>
-      <MantineProvider withGlobalStyles withNormalizeCSS>
+      <MantineProvider
+        theme={{
+          primaryColor: "teal",
+        }}
+        withGlobalStyles
+        withNormalizeCSS
+      >
         {children}
       </MantineProvider>
     </CacheProvider>
