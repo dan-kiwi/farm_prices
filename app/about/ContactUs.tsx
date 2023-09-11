@@ -47,7 +47,6 @@ const useStyles = createStyles((theme) => {
       boxSizing: "border-box",
       flex: 1,
       padding: theme.spacing.xl,
-      paddingLeft: `calc(${theme.spacing.xl} * 2)`,
       borderLeft: 0,
 
       [BREAKPOINT]: {
@@ -173,7 +172,7 @@ export default function ContactUs() {
                 />
                 <TextInput
                   label="Your email"
-                  placeholder="hello@mantine.dev"
+                  placeholder="example@example.com"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                   required

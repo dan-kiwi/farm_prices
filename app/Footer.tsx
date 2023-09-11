@@ -5,10 +5,10 @@ import { IconBrandFacebook } from "@tabler/icons-react";
 
 const useStyles = createStyles((theme) => ({
   footer: {
-    marginTop: 0,
     borderTop: `${rem(1)} solid ${
       theme.colorScheme === "dark" ? theme.colors.dark[5] : theme.colors.gray[2]
     }`,
+    width: "100%",
   },
 
   inner: {

@@ -5,6 +5,7 @@ import {
   createStyles,
   Group,
   Loader,
+  Paper,
   rem,
   SegmentedControl,
   Select,
@@ -25,69 +26,74 @@ import { DatePickerInput, DateValue } from "@mantine/dates";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/types/supabase";
 
-const useStyles = createStyles((theme) => ({
-  wrapper: {
-    minHeight: 400,
-    boxSizing: "border-box",
-    backgroundImage: `linear-gradient(-60deg, ${
-      theme.colors[theme.primaryColor][4]
-    } 0%, ${theme.colors[theme.primaryColor][7]} 100%)`,
-    borderRadius: theme.radius.md,
-    padding: `calc(${theme.spacing.xl} * 2.5)`,
+const useStyles = createStyles((theme) => {
+  const BREAKPOINT = theme.fn.smallerThan("sm");
 
-    [theme.fn.smallerThan("sm")]: {
-      padding: `calc(${theme.spacing.xl} * 1.5)`,
+  return {
+    wrapper: {
+      display: "flex",
+      backgroundColor:
+        theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
+      borderRadius: theme.radius.lg,
+      padding: rem(4),
+      border: `${rem(1)} solid ${
+        theme.colorScheme === "dark"
+          ? theme.colors.dark[8]
+          : theme.colors.gray[2]
+      }`,
     },
-  },
 
-  title: {
-    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-    color: theme.white,
-    lineHeight: 1,
-  },
-
-  description: {
-    color: theme.colors[theme.primaryColor][0],
-    maxWidth: rem(300),
-
-    [theme.fn.smallerThan("sm")]: {
-      maxWidth: "100%",
+    title: {
+      fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+      color: theme.colors[theme.primaryColor][6],
+      lineHeight: 1,
     },
-  },
 
-  form: {
-    backgroundColor: theme.white,
-    padding: theme.spacing.xl,
-    borderRadius: theme.radius.md,
-    boxShadow: theme.shadows.lg,
-  },
-
-  social: {
-    color: theme.white,
-
-    "&:hover": {
-      color: theme.colors[theme.primaryColor][1],
+    description: {
+      [theme.fn.smallerThan("sm")]: {
+        maxWidth: "100%",
+      },
     },
-  },
 
-  input: {
-    backgroundColor: theme.white,
-    borderColor: theme.colors.gray[4],
-    color: theme.black,
+    form: {
+      boxSizing: "border-box",
+      flex: 1,
+      padding: theme.spacing.xl,
+      borderLeft: 0,
 
-    "&::placeholder": {
-      color: theme.colors.gray[5],
+      [BREAKPOINT]: {
+        padding: theme.spacing.md,
+        paddingLeft: theme.spacing.md,
+      },
     },
-  },
 
-  inputLabel: {
-    color: theme.black,
-  },
+    social: {
+      color: theme.white,
 
-  control: {
-    backgroundColor: theme.colors[theme.primaryColor][6],
-  },
-}));
+      "&:hover": {
+        color: theme.colors[theme.primaryColor][1],
+      },
+    },
+
+    input: {
+      backgroundColor: theme.white,
+      borderColor: theme.colors.gray[4],
+      color: theme.black,
+
+      "&::placeholder": {
+        color: theme.colors.gray[5],
+      },
+    },
+
+    inputLabel: {
+      color: theme.black,
+    },
+
+    control: {
+      backgroundColor: theme.colors[theme.primaryColor][6],
+    },
+  };
+});
 
 export default function SubmitForm() {
   const { classes } = useStyles();
@@ -179,24 +185,8 @@ export default function SubmitForm() {
   }, [farmToFarm]);
 
   return (
-    <div className={classes.wrapper}>
-      <SimpleGrid
-        cols={2}
-        spacing={50}
-        breakpoints={[{ maxWidth: "sm", cols: 1 }]}
-      >
-        <div>
-          <Title className={classes.title}>Submit A Price</Title>
-          <Text className={classes.description} mt="sm" mb={30}>
-            Give back to this website, show your support by submitting your
-            sales.
-          </Text>
-          <Text className={classes.description} mt="sm" mb={30}>
-            Your insights are valuable in building a comprehensive pricing
-            database. This will ensure the farming community has access to the
-            most up to date pricing information.
-          </Text>
-        </div>
+    <Paper shadow="md" radius="lg">
+      <div className={classes.wrapper}>
         {formState === "editing" && (
           <form
             className={classes.form}
@@ -331,7 +321,7 @@ export default function SubmitForm() {
             </Button>
           </div>
         )}
-      </SimpleGrid>
-    </div>
+      </div>
+    </Paper>
   );
 }

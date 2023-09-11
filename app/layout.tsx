@@ -17,11 +17,13 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <RootStyleRegistry>
-          <HeaderSimple />
-          <main className="min-h-screen bg-background flex flex-col items-center pt-8 pl-4 pr-4 pb-10 max-w-[60rem] ml-auto mr-auto">
-            {children}
-          </main>
-          <Footer />
+          <div className="flex flex-col min-h-screen">
+            <HeaderSimple />
+            <main className="bg-background flex flex-col items-center pt-8 pl-4 pr-4 pb-10 mb-auto max-w-[60rem] ml-auto mr-auto w-full">
+              {children}
+            </main>
+            <Footer />
+          </div>
         </RootStyleRegistry>
       </body>
     </html>
