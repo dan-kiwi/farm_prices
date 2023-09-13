@@ -25,9 +25,9 @@ const useStyles = createStyles((theme) => {
       display: "flex",
       backgroundColor:
         theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
-      borderRadius: theme.radius.lg,
+      borderRadius: theme.radius.md,
       padding: rem(4),
-      border: `${rem(1)} solid ${
+      border: `${rem(2)} solid ${
         theme.colorScheme === "dark"
           ? theme.colors.dark[8]
           : theme.colors.gray[2]
@@ -147,10 +147,11 @@ export default function ContactUs() {
     setEmail("");
     setSubject("");
     setMessage("");
+    setformState("editing");
   };
 
   return (
-    <Paper shadow="md" radius="lg">
+    <Paper shadow="lg" radius="md">
       <div className={classes.wrapper}>
         {formState === "editing" && (
           <form

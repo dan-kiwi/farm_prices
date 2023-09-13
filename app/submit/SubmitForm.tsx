@@ -25,6 +25,7 @@ import {
 import { DatePickerInput, DateValue } from "@mantine/dates";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database } from "@/types/supabase";
+import { store } from "@/store";
 
 const useStyles = createStyles((theme) => {
   const BREAKPOINT = theme.fn.smallerThan("sm");
@@ -34,9 +35,9 @@ const useStyles = createStyles((theme) => {
       display: "flex",
       backgroundColor:
         theme.colorScheme === "dark" ? theme.colors.dark[8] : theme.white,
-      borderRadius: theme.radius.lg,
+      borderRadius: theme.radius.md,
       padding: rem(4),
-      border: `${rem(1)} solid ${
+      border: `${rem(2)} solid ${
         theme.colorScheme === "dark"
           ? theme.colors.dark[8]
           : theme.colors.gray[2]
@@ -92,20 +93,43 @@ const useStyles = createStyles((theme) => {
     control: {
       backgroundColor: theme.colors[theme.primaryColor][6],
     },
+
+    segmentedControl: {
+      root: {
+        backgroundColor:
+          theme.colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
+        boxShadow: theme.shadows.md,
+        border: `${rem(1)} solid ${
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[4]
+            : theme.colors.gray[1]
+        }`,
+      },
+
+      indicator: {
+        backgroundImage: theme.fn.gradient({ from: "pink", to: "orange" }),
+      },
+    },
   };
 });
 
 export default function SubmitForm() {
   const { classes } = useStyles();
   const supabase = createClientComponentClient<Database>();
-  //TODO - add redux context
+  const userPricePreferences = store.getState().userPricePreferences;
 
   const [formState, setFormState] = useState<
     "editing" | "sending" | "confirmed" | "error"
   >("editing");
-  const [regionLocal, setRegionLocal] = useState<RegionIndices>(13);
-  const [itemLocal, setItemLocal] = useState<ItemIndices>(0);
-  const [varietyLocal, setVarietyLocal] = useState<number>(0);
+  const [regionLocal, setRegionLocal] = useState<RegionIndices>(
+    userPricePreferences.region,
+  );
+  const [itemLocal, setItemLocal] = useState<ItemIndices>(
+    userPricePreferences.item,
+  );
+  const [varietyLocal, setVarietyLocal] = useState<number>(
+    userPricePreferences.variety,
+  );
   const [price, setPrice] = useState<number | undefined>();
   const [businessName, setBusinessName] = useState<string | null>(null);
   const [otherBusinessName, setOtherBusinessName] = useState<string | null>(
@@ -154,10 +178,9 @@ export default function SubmitForm() {
     return;
   };
   const resetForm = () => {
-    //TODO fix this
-    // setRegionLocal(itemLocationContext.region);
-    // setItemLocal(itemLocationContext.item);
-    // setVarietyLocal(itemLocationContext.variety);
+    setRegionLocal(userPricePreferences.region);
+    setItemLocal(userPricePreferences.item);
+    setVarietyLocal(userPricePreferences.variety);
     setPrice(undefined);
     setBusinessName(null);
     setOtherBusinessName(null);
@@ -185,7 +208,7 @@ export default function SubmitForm() {
   }, [farmToFarm]);
 
   return (
-    <Paper shadow="md" radius="lg">
+    <Paper shadow="lg" radius="md">
       <div className={classes.wrapper}>
         {formState === "editing" && (
           <form
@@ -252,7 +275,9 @@ export default function SubmitForm() {
             <SegmentedControl
               data={["Farm to Farm", "Farm to AgriBusiness"]}
               onChange={(value) => setFarmToFarm(value === "Farm to Farm")}
-              className="mt-3"
+              className={classes.segmentedControl}
+              radius="md"
+              fullWidth
             />
             {!farmToFarm && (
               <Select
