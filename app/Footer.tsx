@@ -1,7 +1,15 @@
 "use client";
 
-import { createStyles, Container, Group, ActionIcon, rem } from "@mantine/core";
-import { IconBrandFacebook } from "@tabler/icons-react";
+import {
+  ActionIcon,
+  Container,
+  createStyles,
+  Group,
+  rem,
+  Text,
+} from "@mantine/core";
+import { IconBrandGithub } from "@tabler/icons-react";
+import Link from "next/link";
 
 const useStyles = createStyles((theme) => ({
   footer: {
@@ -37,9 +45,14 @@ export default function Footer() {
     <div className={classes.footer}>
       <Container className={classes.inner}>
         <Group spacing={0} className={classes.links} position="right" noWrap>
-          <ActionIcon size="lg">
-            <IconBrandFacebook size="1.05rem" stroke={1.5} />
-          </ActionIcon>
+          <Text size="sm" color="dimmed">
+            Made by dan-kiwi
+          </Text>
+          <Link href="https://github.com/dan-kiwi">
+            <ActionIcon size="lg">
+              <IconBrandGithub size="1.05rem" stroke={1.5} />
+            </ActionIcon>
+          </Link>
         </Group>
       </Container>
     </div>
