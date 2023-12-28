@@ -6,7 +6,7 @@ import Image from "next/image";
 import pricePicture from "./price_page.png";
 
 export default function PricePictureModal() {
-  const [opened, { open, close }] = useDisclosure(true);
+  const [opened, { close }] = useDisclosure(true);
   return (
     <>
       <Modal
@@ -24,7 +24,7 @@ export default function PricePictureModal() {
             should not be considered a reflection of my full capabilities.
             Instead, it serves as a glimpse into my work process. For a
             comprehensive view of my personal projects, I invite you to visit my
-            GitHub profile. Below, you'll find an image illustrating how the
+            GitHub profile. Below, you will find an image illustrating how the
             pricing page appeared when the back-end was active.
           </p>
           <Image
